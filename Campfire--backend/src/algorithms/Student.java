@@ -64,6 +64,10 @@ public class Student {
 		return availablematches;
 	}
 	
+	public void addAvailablematches(Course course, Student s) {
+		this.getAvailablematches().get(course).add(s);
+	}
+	
 	/*
 	 * Gets all the students in Course course that are
 	 * not this student.
@@ -98,13 +102,35 @@ public class Student {
 	 * and every other student.
 	 * 
 	 */
-	public void MatchWithClass(Course course){
+	public void MatchWithClass(Course course, Boolean flag){
 		HashMap <Student, Holder> tmp = new HashMap <Student, Holder>();
-		for (Student s : course.getStudents()){
-			tmp.put(s, this.GenerateScore(s));
+		
+		/*
+		 * If flag is true then the student is being added to the course
+		 * for the first time -- match with everyone
+		 * 
+		 */
+		if (flag){
+			for (Student s : course.getStudents()){
+				tmp.put(s, this.GenerateScore(s));
+			}
+			this.getMatchvalues().put(course.getName(), tmp);
+			this.getAvailablematches().put(course.getName(), this.getallOtherCourseStudents(course));
 		}
-		this.getMatchvalues().put(course.getName(), tmp);
-		this.getAvailablematches().put(course.getName(), this.getallOtherCourseStudents(course));
+		
+		/*
+		 * If flag is false then student has already calculated everyone
+		 * at least once -- only need to calculate score of sudents
+		 * that are available matches.
+		 * 
+		 */
+		else {
+			for (Student s : this.getAvailablematches().get(course)){
+				tmp.put(s, this.GenerateScore(s));	
+			}
+			this.getMatchvalues().put(course.getName(), tmp);
+		}
+		
 	}
 
 	

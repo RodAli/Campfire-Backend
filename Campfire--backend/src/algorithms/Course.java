@@ -36,10 +36,15 @@ public class Course {
 	/*
 	 * Adds Student s to the implicit graph of
 	 * this course.
+	 * Also adds the student to the available matches
+	 * of every other student for this course.
 	 * 
 	 */
 	public void addStudent(Student s){
-		s.MatchWithClass(this);
+		s.MatchWithClass(this, true);
+		for (Student stu : this.getStudents()){
+			stu.addAvailablematches(this, s);
+		}
 		this.getStudents().add(s);
 	}
 	
