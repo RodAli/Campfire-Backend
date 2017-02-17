@@ -15,22 +15,30 @@ import java.util.HashMap;
  */
 public class Student {
 
-	private String name;
+	private String fname;
+	private String lname;
 	private String email;
 	private ArrayList<Comparable> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues;
 	private HashMap<String, ArrayList<Student>> availablematches;
 	
-	public Student(String name, String email, ArrayList<Comparable> criteria) {
+	public Student(String fname, String lname, String email, ArrayList<Comparable> criteria) {
 		super();
-		this.name = name;
+		this.fname = fname;
+		this.lname = lname;
 		this.email = email;
 		this.criteria = criteria;
 	}
 
-	public String getName() {
-		return name;
+	public String getFname() {
+		return fname;
 	}
+
+
+	public String getLname() {
+		return lname;
+	}
+
 
 	public String getEmail() {
 		return email;
