@@ -19,8 +19,8 @@ public class Student {
 	private String lname;
 	private String email;
 	private ArrayList<Comparable> criteria;
-	private HashMap<String, HashMap<Student, Holder>> matchvalues;
-	private HashMap<String, ArrayList<Student>> availablematches;
+	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
+	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();;
 	
 	public Student(String fname, String lname, String email, ArrayList<Comparable> criteria) {
 		super();
@@ -65,7 +65,10 @@ public class Student {
 	}
 	
 	public void addAvailablematches(Course course, Student s) {
-		this.getAvailablematches().get(course).add(s);
+		if (this.getAvailablematches().get(course.getName()) == null){
+			this.getAvailablematches().put(course.getName(), new ArrayList<Student>());
+		}
+		this.getAvailablematches().get(course.getName()).add(s);
 	}
 	
 	/*
@@ -87,7 +90,7 @@ public class Student {
 	public Holder GenerateScore(Student s){
 		double aggregate = 0;
 		for (Comparable c : this.getCriteria()){
-			aggregate += c.Compare(s.getCriteria().get(s.getCriteria().indexOf(c)));
+			aggregate += c.Compare(s.getCriteria().get(this.getCriteria().indexOf(c)));
 		}
 		return new Holder(aggregate);
 	}
@@ -103,6 +106,11 @@ public class Student {
 	 * 
 	 */
 	public void MatchWithClass(Course course, Boolean flag){
+		
+		if (course.getStudents().isEmpty()){
+			return;
+		}
+		
 		HashMap <Student, Holder> tmp = new HashMap <Student, Holder>();
 		
 		/*
@@ -143,7 +151,7 @@ public class Student {
 		Student bestStudent = null;
 		double bestScore = 0;
 		for (Student s : this.getAvailablematches().get(course.getName())){
-			if (this.getClassMatchvalues(course).get(s).getValue() > bestScore){
+			if ((s.getEmail() != this.getEmail()) && this.getClassMatchvalues(course).get(s).getValue() > bestScore){
 				bestStudent = s;
 				bestScore = this.getClassMatchvalues(course).get(s).getValue();
 			}

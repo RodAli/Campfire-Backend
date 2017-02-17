@@ -13,7 +13,7 @@ public class Course {
 	private String instructor; //Unneeded? Here just in case.
 	
 	//All the students in this course.
-	private ArrayList<Student> Students;
+	private ArrayList<Student> Students = new ArrayList<Student>();
 	
 	public Course(String name, String instructor) {
 		super();
