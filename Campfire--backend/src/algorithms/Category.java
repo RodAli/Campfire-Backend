@@ -1,7 +1,8 @@
 package algorithms;
 
 /*
- * 
+ * Each students categories/hobbies and index value; specifically how much skill or 
+ * interest they have in it.
  * 
  */
 public class Category {
