@@ -18,11 +18,12 @@ public class Student {
 	private String fname;
 	private String lname;
 	private String email;
-	private ArrayList<Comparable> criteria;
+	//private ArrayList<Comparable> criteria;
+	private ArrayList<Category> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
-	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();;
+	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, ArrayList<Comparable> criteria) {
+	public Student(String fname, String lname, String email, ArrayList<Category> criteria) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
@@ -43,8 +44,8 @@ public class Student {
 	public String getEmail() {
 		return email;
 	}
-
-	public ArrayList<Comparable> getCriteria() {
+	
+	public ArrayList<Category> getCriteria(){
 		return criteria;
 	}
 
@@ -93,14 +94,17 @@ public class Student {
 	 * 
 	 */
 	public Holder GenerateScore(Student s){
-		double aggregate = 0;
-		for (Comparable c : this.getCriteria()){
-			//@Vlad -- this is the line that needs to be fixed by adding a public static final ID field
-			//to every comparable and looking for the comparables with the same IDs
-			aggregate += c.Compare(s.getCriteria().get(this.getCriteria().indexOf(c)));
+		double totalScore = 0;
+		for (Category thisStudent : this.getCriteria()){
+			for(Category otherStudent : s.getCriteria()){
+				if(thisStudent.getCategory() == otherStudent.getCategory()){
+					totalScore += Math.abs(thisStudent.getIndex() - otherStudent.getIndex());
+				}
+			}
 		}
-		return new Holder(aggregate);
+		return new Holder(totalScore);
 	}
+	
 	
 	/*
 	 * Fills up the matchvalues HashMap for Course course
