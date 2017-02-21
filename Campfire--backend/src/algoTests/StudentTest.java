@@ -114,5 +114,72 @@ public class StudentTest {
 		
 	}
 	
+	@Test
+	public void testMatchWithMultipleStudents() {
+		ArrayList<Comparable> c1 = new ArrayList<Comparable>();
+		ArrayList<Comparable> c2 = new ArrayList<Comparable>();
+		ArrayList<Comparable> c3 = new ArrayList<Comparable>();
+		
+		c1.add(d1);
+		c2.add(d2);
+		c3.add(d3);
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", c3);
+		
+		Course course = new Course("CSC301", "Joey Freund");
+		
+		course.addStudent(s1);
+		course.addStudent(s3);
+		course.addStudent(s2);
+		Student stu = s2.getBestClassMatch(course);
+		assertEquals("D.Donaldson@gmail.com", stu.getEmail());
+		
+		s2.notMatched(s3, course);
+		
+		Student stu2 = s2.getBestClassMatch(course);
+		assertEquals("J.Doe@gmail.com", stu2.getEmail());
+		
+		s2.notMatched(s1, course);
+		
+		Student stu3 = s2.getBestClassMatch(course);
+		assertNull(stu3);
+		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testCannotAddSameStudentTwiceToTheSameCourse(){
+		ArrayList<Comparable> c1 = new ArrayList<Comparable>();
+		c1.add(d1);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1);
+		Course course = new Course("CSC301", "Joey Freund");
+		course.addStudent(s1);
+		course.addStudent(s1);
+		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testCannotAddSameEmailTwiceToTheSameCourse(){
+		ArrayList<Comparable> c1 = new ArrayList<Comparable>();
+		ArrayList<Comparable> c2 = new ArrayList<Comparable>();
+		c1.add(d1);
+		c2.add(d2);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1);
+		s2 = new Student("John", "Smith", "J.Doe@gmail.com", c2);
+		Course course = new Course("CSC301", "Joey Freund");
+		course.addStudent(s1);
+		course.addStudent(s2);
+		
+	}
+	
+	/*
+	 * @Vlad -- add tests here for getting best match for multiple criteria
+	 * and for getting best match where one or more criteria don't match (but at least one 
+	 * has to match) and a test expecting an exception when no criteria match.
+	 * 
+	 */
+	
+	
 
 }

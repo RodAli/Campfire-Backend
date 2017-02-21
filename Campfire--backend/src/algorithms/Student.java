@@ -68,7 +68,9 @@ public class Student {
 		if (this.getAvailablematches().get(course.getName()) == null){
 			this.getAvailablematches().put(course.getName(), new ArrayList<Student>());
 		}
-		this.getAvailablematches().get(course.getName()).add(s);
+		if (s.getEmail() != this.getEmail()){
+			this.getAvailablematches().get(course.getName()).add(s);
+		}
 	}
 	
 	/*
@@ -77,7 +79,10 @@ public class Student {
 	 * 
 	 */
 	public ArrayList<Student> getallOtherCourseStudents(Course course){
-		ArrayList<Student>tmpStudents = course.getStudents();
+		ArrayList<Student>tmpStudents = new ArrayList<Student>();
+		for (Student stu : course.getStudents()){
+			tmpStudents.add(stu);
+		}
 		tmpStudents.remove(this);
 		return tmpStudents;
 	}
@@ -90,6 +95,8 @@ public class Student {
 	public Holder GenerateScore(Student s){
 		double aggregate = 0;
 		for (Comparable c : this.getCriteria()){
+			//@Vlad -- this is the line that needs to be fixed by adding a public static final ID field
+			//to every comparable and looking for the comparables with the same IDs
 			aggregate += c.Compare(s.getCriteria().get(this.getCriteria().indexOf(c)));
 		}
 		return new Holder(aggregate);
@@ -148,10 +155,13 @@ public class Student {
 	 * 
 	 */
 	public Student getBestClassMatch(Course course){
+		if(this.getAvailablematches().get(course.getName()).isEmpty()){
+			return null;
+		}
 		Student bestStudent = null;
-		double bestScore = 0;
+		double bestScore = Double.MAX_VALUE;
 		for (Student s : this.getAvailablematches().get(course.getName())){
-			if ((s.getEmail() != this.getEmail()) && this.getClassMatchvalues(course).get(s).getValue() > bestScore){
+			if ((s.getEmail() != this.getEmail()) && this.getClassMatchvalues(course).get(s).getValue() < bestScore){
 				bestStudent = s;
 				bestScore = this.getClassMatchvalues(course).get(s).getValue();
 			}
@@ -167,8 +177,8 @@ public class Student {
 	 * 
 	 */
 	public void notMatched(Student s, Course course){
-		ArrayList<Student> tmp = this.getallOtherCourseStudents(course);
-		tmp.remove(s);
-		this.getAvailablematches().put(course.getName(), tmp);
+		
+		this.getAvailablematches().get(course.getName()).remove(s);
+		
 	}
 }
