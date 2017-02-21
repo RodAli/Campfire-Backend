@@ -34,16 +34,35 @@ public class Course {
 	}
 	
 	/*
+	 * Checks whether email is already used by a student in the course.
+	 * Enforces email as a unique identifier for students in a course.
+	 * 
+	 */
+	public Boolean emailExists(String email){
+		for (Student stu : this.getStudents()){
+			if (stu.getEmail() == email){
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	/*
 	 * Adds Student s to the implicit graph of
 	 * this course.
 	 * Also adds the student to the available matches
 	 * of every other student for this course.
 	 * 
 	 */
-	public void addStudent(Student s){
+	public void addStudent(Student s) throws IllegalArgumentException{
+		if (this.getStudents().contains(s) || emailExists(s.getEmail())){
+			throw new IllegalArgumentException("Cannot add a student who is already in the course.");
+		}
 		s.MatchWithClass(this, true);
-		for (Student stu : this.getStudents()){
-			stu.addAvailablematches(this, s);
+		ArrayList<Student> stuList = this.getStudents();
+		for (int i = 0; i < stuList.size(); i++){
+			stuList.get(i).addAvailablematches(this, s);
 		}
 		this.getStudents().add(s);
 	}
