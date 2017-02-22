@@ -18,17 +18,18 @@ public class Student {
 	private String fname;
 	private String lname;
 	private String email;
-	//private ArrayList<Comparable> criteria;
+	private ArrayList<Comparable> criteria2;
 	private ArrayList<Category> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, ArrayList<Category> criteria) {
+	public Student(String fname, String lname, String email, ArrayList<Category> criteria, ArrayList<Comparable> criteria2) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.criteria = criteria;
+		this.criteria2 = criteria2;
 	}
 
 	public String getFname() {
@@ -43,6 +44,10 @@ public class Student {
 
 	public String getEmail() {
 		return email;
+	}
+	
+	public ArrayList<Comparable> getCriteria2(){
+		return criteria2;
 	}
 	
 	public ArrayList<Category> getCriteria(){
@@ -93,12 +98,27 @@ public class Student {
 	 * and Student s.
 	 * 
 	 */
+	
+	//This method is used for the ArrayList<Category>
 	public Holder GenerateScore(Student s){
 		double totalScore = 0;
 		for (Category thisStudent : this.getCriteria()){
 			for(Category otherStudent : s.getCriteria()){
 				if(thisStudent.getCategory() == otherStudent.getCategory()){
 					totalScore += Math.abs(thisStudent.getIndex() - otherStudent.getIndex());
+				}
+			}
+		}
+		return new Holder(totalScore);
+	}
+	
+	//This method is used for the ArrayList<Comparable>
+	public Holder GenerateScore2(Student s){
+		double totalScore = 0;
+		for (Comparable thisStudent : this.getCriteria2()){
+			for(Comparable otherStudent : s.getCriteria2()){
+				if(thisStudent.getID() == otherStudent.getID()){
+					totalScore += thisStudent.Compare(otherStudent);
 				}
 			}
 		}
