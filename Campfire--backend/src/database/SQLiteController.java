@@ -7,11 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class to handle building and creating the database. Also handles the
+ * communication and queries made to the database.
+ * 
+ * Creates at table named 'student'
+ */
 public class SQLiteController {
 	
 	// Our connection instance to the database
 	private static Connection connection = null;
-	private static Statement statement = null;
 	private static boolean initialized = false;
 	
 	/**
@@ -23,7 +28,7 @@ public class SQLiteController {
 		// Set up the database connection
 		Class.forName("org.sqlite.JDBC");
 	    connection = DriverManager.getConnection("jdbc:sqlite:Campfire.db");
-	    statement = connection.createStatement();
+	    Statement statement = connection.createStatement();
 	    
 	    // Verify on first instance of this class that we are connected to the database
 	    if (!initialized){
@@ -36,47 +41,56 @@ public class SQLiteController {
 	    	// If the student table does not exist in database, create it 
 	    	if(!result.next()){
 	    		String createQuery = "CREATE TABLE student(" + 
-	    							 "id integer primary key autoincrement," +
-	    							 "email TEXT," +
-	    							 "fname TEXT," + 
-	    							 "lname TEXT);";
+	    							 "email CHAR(20) PRIMARY KEY," +
+	    							 "fname CHAR(20)," + 
+	    							 "lname CHAR(20));";
 	    		statement.executeUpdate(createQuery);
 	    	}
 	    }
+	    
+	    statement.close();
 	}
 	
 	/**
-	 * Query all the students in the Campfire.db database.
-	 * @return a ResultSet of all students and all their information
+	 * Return the Connection instance that this SQLite Controller is attached.
+	 * @return Connection instance to the database we are connected to
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public Connection getConnection() throws ClassNotFoundException, SQLException{
+		if (connection == null){
+			connectToDB();
+		}
+		return SQLiteController.connection;
+	}
+	
+	/**
+	 * Method used to request information from the database, with giving a query.
+	 * @param query a string of the query that is requesting information
+	 * @return the ResultSet object of the return value from the query
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public ResultSet getAllStudents() throws SQLException, ClassNotFoundException{
+	public ResultSet returnQuery(PreparedStatement state) throws ClassNotFoundException, SQLException{
 		// Check if we need to connect to the database, do so if needed
 		if (connection == null){
-			System.out.println("1");
 			connectToDB();
 		}
-		
-		// Return all students
-		String query = "SELECT * FROM student";
-		return statement.executeQuery(query);
+		return state.executeQuery();
 	}
 	
-	//TODO: DUMMY METHOD CHANGE LATER TO TAKE AN OBJECT OF STUDENT
-	public void addStudent(String fname, String lname, String email) throws SQLException, ClassNotFoundException{
+	/**
+	 * Updates the database based on the query that is given.
+	 * @param query that is being requesting modification of the database
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public void updateQuery(PreparedStatement state) throws ClassNotFoundException, SQLException{
 		// Check if we need to connect to the database, do so if needed
 		if (connection == null){
 			connectToDB();
 		}
-		
-		// Get the user from database based on arguments
-		String query = "INSERT INTO student values(?,?,?,?)";
-		PreparedStatement prepState = connection.prepareStatement(query);
-		prepState.setString(2, email);
-		prepState.setString(3, fname);
-		prepState.setString(4, lname);
-		prepState.execute();
+		state.executeUpdate();
 	}
 	
 	
@@ -87,8 +101,9 @@ public class SQLiteController {
 	 */
 	public void closeConnectionToDB() throws SQLException, ClassNotFoundException{
 		// Close connection and statement object
-		statement.close();
-		connection.close();
+		if (connection != null){
+			connection.close();
+		}
 	}
 	
 	
