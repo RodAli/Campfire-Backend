@@ -1,10 +1,10 @@
 package database;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import algorithms.Student;
+import algorithms.Category;
 import algorithms.Comparable;
 
 public class TestMain {
@@ -14,10 +14,10 @@ public class TestMain {
 		SQLiteController sqlcon = new SQLiteController();
 		
 		try {
-			ArrayList<Comparable> blank = new ArrayList<Comparable>();
-			Student stu = new Student("Mike", "Lulu", "goo@mail.com", blank);
+			ArrayList<Category> blank = new ArrayList<Category>();
+			Student stu = new Student("Joe", "Lulu", "asdf@mail.com", blank);
 			
-			SQLiteQueryAdapter.addStudent(sqlcon, stu);
+			//SQLiteQueryAdapter.addStudent(sqlcon, stu);
 			
 			ArrayList<Student> allStudents = SQLiteQueryAdapter.allStudents(sqlcon);
 			
@@ -27,6 +27,8 @@ public class TestMain {
 								allStudents.get(i).getLname();
 				System.out.println(text);
 			}
+			
+			System.out.println(SQLiteQueryAdapter.studentExists(sqlcon, "goo@mail.com"));
 			
 			sqlcon.closeConnectionToDB();
 		} catch (SQLException e) {

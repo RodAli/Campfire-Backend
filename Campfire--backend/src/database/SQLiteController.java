@@ -58,6 +58,7 @@ public class SQLiteController {
 	 * @throws ClassNotFoundException 
 	 */
 	public Connection getConnection() throws ClassNotFoundException, SQLException{
+		// Check if we need to connect to the database, do so if needed
 		if (connection == null){
 			connectToDB();
 		}
