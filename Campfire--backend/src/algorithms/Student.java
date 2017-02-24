@@ -18,16 +18,18 @@ public class Student {
 	private String fname;
 	private String lname;
 	private String email;
-	private ArrayList<Comparable> criteria;
+	private ArrayList<Comparable> criteria2;
+	private ArrayList<Category> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
-	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();;
+	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, ArrayList<Comparable> criteria) {
+	public Student(String fname, String lname, String email, ArrayList<Category> criteria, ArrayList<Comparable> criteria2) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.criteria = criteria;
+		this.criteria2 = criteria2;
 	}
 
 	public String getFname() {
@@ -43,8 +45,12 @@ public class Student {
 	public String getEmail() {
 		return email;
 	}
-
-	public ArrayList<Comparable> getCriteria() {
+	
+	public ArrayList<Comparable> getCriteria2(){
+		return criteria2;
+	}
+	
+	public ArrayList<Category> getCriteria(){
 		return criteria;
 	}
 
@@ -68,7 +74,9 @@ public class Student {
 		if (this.getAvailablematches().get(course.getName()) == null){
 			this.getAvailablematches().put(course.getName(), new ArrayList<Student>());
 		}
-		this.getAvailablematches().get(course.getName()).add(s);
+		if (s.getEmail() != this.getEmail()){
+			this.getAvailablematches().get(course.getName()).add(s);
+		}
 	}
 	
 	/*
@@ -77,7 +85,10 @@ public class Student {
 	 * 
 	 */
 	public ArrayList<Student> getallOtherCourseStudents(Course course){
-		ArrayList<Student>tmpStudents = course.getStudents();
+		ArrayList<Student>tmpStudents = new ArrayList<Student>();
+		for (Student stu : course.getStudents()){
+			tmpStudents.add(stu);
+		}
 		tmpStudents.remove(this);
 		return tmpStudents;
 	}
@@ -87,13 +98,33 @@ public class Student {
 	 * and Student s.
 	 * 
 	 */
+	
+	//This method is used for the ArrayList<Category>
 	public Holder GenerateScore(Student s){
-		double aggregate = 0;
-		for (Comparable c : this.getCriteria()){
-			aggregate += c.Compare(s.getCriteria().get(this.getCriteria().indexOf(c)));
+		double totalScore = 0;
+		for (Category thisStudent : this.getCriteria()){
+			for(Category otherStudent : s.getCriteria()){
+				if(thisStudent.getCategory() == otherStudent.getCategory()){
+					totalScore += Math.abs(thisStudent.getIndex() - otherStudent.getIndex());
+				}
+			}
 		}
-		return new Holder(aggregate);
+		return new Holder(totalScore);
 	}
+	
+	//This method is used for the ArrayList<Comparable>
+	public Holder GenerateScore2(Student s){
+		double totalScore = 0;
+		for (Comparable thisStudent : this.getCriteria2()){
+			for(Comparable otherStudent : s.getCriteria2()){
+				if(thisStudent.getID() == otherStudent.getID()){
+					totalScore += thisStudent.Compare(otherStudent);
+				}
+			}
+		}
+		return new Holder(totalScore);
+	}
+	
 	
 	/*
 	 * Fills up the matchvalues HashMap for Course course
@@ -148,10 +179,13 @@ public class Student {
 	 * 
 	 */
 	public Student getBestClassMatch(Course course){
+		if(this.getAvailablematches().get(course.getName()).isEmpty()){
+			return null;
+		}
 		Student bestStudent = null;
-		double bestScore = 0;
+		double bestScore = Double.MAX_VALUE;
 		for (Student s : this.getAvailablematches().get(course.getName())){
-			if ((s.getEmail() != this.getEmail()) && this.getClassMatchvalues(course).get(s).getValue() > bestScore){
+			if ((s.getEmail() != this.getEmail()) && this.getClassMatchvalues(course).get(s).getValue() < bestScore){
 				bestStudent = s;
 				bestScore = this.getClassMatchvalues(course).get(s).getValue();
 			}
@@ -167,8 +201,8 @@ public class Student {
 	 * 
 	 */
 	public void notMatched(Student s, Course course){
-		ArrayList<Student> tmp = this.getallOtherCourseStudents(course);
-		tmp.remove(s);
-		this.getAvailablematches().put(course.getName(), tmp);
+		
+		this.getAvailablematches().get(course.getName()).remove(s);
+		
 	}
 }
