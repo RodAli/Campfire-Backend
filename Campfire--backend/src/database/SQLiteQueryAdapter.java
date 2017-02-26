@@ -119,6 +119,20 @@ public class SQLiteQueryAdapter {
 	}
 	
 	/**
+	 * 
+	 * @param controller
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	public static void deleteStudent(SQLiteController controller, String email) throws SQLException, ClassNotFoundException{
+		Connection connection = controller.getConnection();
+		PreparedStatement statement = connection.prepareStatement("DELETE FROM student WHERE email = ?");
+		statement.setString(1, email);
+		controller.updateQuery(statement);
+		// TODO remove student from coursetostudent table
+	}
+	
+	/**
 	 * Delete all the students in the database.
 	 * @param controller instance of SQLiteController with a connection to database
 	 * @throws SQLException
@@ -128,6 +142,8 @@ public class SQLiteQueryAdapter {
 		Connection connection = controller.getConnection();
 		PreparedStatement statement = connection.prepareStatement("DELETE FROM student");
 		controller.updateQuery(statement);
+		// Remove all the enrollments
+		deleteAllEnrollments(controller);
 	}
 	
 	/**
@@ -147,6 +163,8 @@ public class SQLiteQueryAdapter {
 		statement.setString(3, course.getInstructor());
 		// Run the query
 		controller.updateQuery(statement);
+		
+		//TODO add all the courses students into the database
 	}
 	
 	/**
@@ -171,6 +189,8 @@ public class SQLiteQueryAdapter {
 			Course course = new Course(code, name, instructor);
 			courseList.add(course);
 		}
+		
+		// TODO Add all the student objects enrolled in each course
 		return courseList;
 	}
 	
@@ -216,6 +236,8 @@ public class SQLiteQueryAdapter {
 				String instructor = set.getString("instructor");
 				
 				Course course = new Course(code, name, instructor);
+				
+				// TODO add all the student objects in this course
 				return course;
 			} else {
 				return null;
@@ -223,6 +245,21 @@ public class SQLiteQueryAdapter {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * Remove a particular course from the database.
+	 * @param controller instance of SQLiteController with a connection to database
+	 * @param code of the course that is needed to be deleted
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	public static void deleteCourse(SQLiteController controller, String code) throws SQLException, ClassNotFoundException{
+		Connection connection = controller.getConnection();
+		PreparedStatement statement = connection.prepareStatement("DELETE FROM course WHERE code = ?");
+		//TODO also remove this course from the course to student table
+		statement.setString(1, code);
+		controller.updateQuery(statement);
 	}
 	
 	/**
@@ -234,6 +271,20 @@ public class SQLiteQueryAdapter {
 	public static void deleteAllCourses(SQLiteController controller) throws SQLException, ClassNotFoundException{
 		Connection connection = controller.getConnection();
 		PreparedStatement statement = connection.prepareStatement("DELETE FROM course");
+		controller.updateQuery(statement);
+		// Remove all the enrollments
+		deleteAllEnrollments(controller);
+	}
+	
+	/**
+	 * Delete all the enrollments of students in courses from the database.
+	 * @param controller instance of SQLiteController with a connection to database
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	public static void deleteAllEnrollments(SQLiteController controller) throws SQLException, ClassNotFoundException{
+		Connection connection = controller.getConnection();
+		PreparedStatement statement = connection.prepareStatement("DELETE FROM coursetostudent");
 		controller.updateQuery(statement);
 	}
 }

@@ -63,7 +63,7 @@ public class SQLiteController {
 	    	
 	    	// Check if the coursetostudent table exists in the database
 	    	String queryCourseToStudent = "SELECT name FROM sqlite_master WHERE type='table' AND name='coursetostudent'";
-	    	ResultSet resultCourseToStudent = statement.executeQuery(queryCourse);
+	    	ResultSet resultCourseToStudent = statement.executeQuery(queryCourseToStudent);
 	    	
 	    	// If the coursetostudent table does not exist in database, create it 
 	    	if(!resultCourseToStudent.next()){
