@@ -15,13 +15,16 @@ public class TestMain {
 		SQLiteController sqlcon = new SQLiteController();
 		
 		try {
-//			Student stu1 = new Student("Joe", "Lulu", "joe@mail.com", "pass1", null, null);
-//			Student stu2 = new Student("Mark", "Savage", "mark@mail.com", "pass2", null, null);
-//			Student stu3 = new Student("Lucy", "Vander", "lucy@mail.com", "pass3", null, null);
-//			
-//			SQLiteQueryAdapter.addStudent(sqlcon, stu1);
-//			SQLiteQueryAdapter.addStudent(sqlcon, stu2);
-//			SQLiteQueryAdapter.addStudent(sqlcon, stu3);
+			SQLiteQueryAdapter.deleteAllCourses(sqlcon);
+			SQLiteQueryAdapter.deleteAllStudents(sqlcon);
+			
+			Student stu1 = new Student("Joe", "Lulu", "joe@mail.com", "pass1", null, null);
+			Student stu2 = new Student("Mark", "Savage", "mark@mail.com", "pass2", null, null);
+			Student stu3 = new Student("Lucy", "Vander", "lucy@mail.com", "pass3", null, null);
+			
+			SQLiteQueryAdapter.addStudent(sqlcon, stu1);
+			SQLiteQueryAdapter.addStudent(sqlcon, stu2);
+			SQLiteQueryAdapter.addStudent(sqlcon, stu3);
 			
 			ArrayList<Student> allStudents = SQLiteQueryAdapter.allStudents(sqlcon);
 			
@@ -37,8 +40,8 @@ public class TestMain {
 			System.out.println(SQLiteQueryAdapter.getStudent(sqlcon, "lucy@mail.com").getEmail());
 			System.out.println("-----------------------------------------");
 			
-//			Course course = new Course("CSC108", "Intro to Programming", "Paul Gries");
-//			SQLiteQueryAdapter.addCourse(sqlcon, course);
+			Course course = new Course("CSC108", "Intro to Programming", "Paul Gries");
+			SQLiteQueryAdapter.addCourse(sqlcon, course);
 			
 			ArrayList<Course> allCourses = SQLiteQueryAdapter.allCourses(sqlcon);
 			for(int i = 0; i < allCourses.size(); i++){
@@ -48,6 +51,7 @@ public class TestMain {
 				System.out.println(text);
 			}
 			System.out.println(SQLiteQueryAdapter.courseExists(sqlcon, "CSC108"));
+			System.out.println(SQLiteQueryAdapter.getCourse(sqlcon, "CSC108").getCourseCode());
 			
 			sqlcon.closeConnectionToDB();
 		} catch (SQLException e) {

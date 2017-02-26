@@ -126,7 +126,7 @@ public class SQLiteQueryAdapter {
 	 */
 	public static void deleteAllStudents(SQLiteController controller) throws SQLException, ClassNotFoundException{
 		Connection connection = controller.getConnection();
-		PreparedStatement statement = connection.prepareStatement("DELETE * FROM student");
+		PreparedStatement statement = connection.prepareStatement("DELETE FROM student");
 		controller.updateQuery(statement);
 	}
 	
@@ -206,9 +206,9 @@ public class SQLiteQueryAdapter {
 	 */
 	public static Course getCourse(SQLiteController controller, String code) throws SQLException, ClassNotFoundException{
 		// Make sure course exists
-		if (studentExists(controller, code)){
+		if (courseExists(controller, code)){
 			Connection connection = controller.getConnection();
-			PreparedStatement statement = connection.prepareStatement("SELECT * FROM course WHERE email=?");
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM course WHERE code=?");
 			statement.setString(1, code);
 			ResultSet set = controller.returnQuery(statement);
 			if (set.next()){
@@ -233,7 +233,7 @@ public class SQLiteQueryAdapter {
 	 */
 	public static void deleteAllCourses(SQLiteController controller) throws SQLException, ClassNotFoundException{
 		Connection connection = controller.getConnection();
-		PreparedStatement statement = connection.prepareStatement("DELETE * FROM course");
+		PreparedStatement statement = connection.prepareStatement("DELETE FROM course");
 		controller.updateQuery(statement);
 	}
 }
