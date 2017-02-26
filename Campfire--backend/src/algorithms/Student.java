@@ -18,18 +18,28 @@ public class Student {
 	private String fname;
 	private String lname;
 	private String email;
+	private String pass;
 	private ArrayList<Comparable> criteria2;
 	private ArrayList<Category> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, ArrayList<Category> criteria, ArrayList<Comparable> criteria2) {
+	public Student(String fname, String lname, String email, String pass, ArrayList<Category> criteria, ArrayList<Comparable> criteria2) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
+		this.pass = pass;
 		this.criteria = criteria;
 		this.criteria2 = criteria2;
+	}
+	
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 
 	public String getFname() {
