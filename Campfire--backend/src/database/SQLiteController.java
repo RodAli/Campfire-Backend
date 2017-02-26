@@ -11,7 +11,7 @@ import java.sql.Statement;
  * Class to handle building and creating the database. Also handles the
  * communication and queries made to the database.
  * 
- * Creates at table named 'student'
+ * Creates at tables named 'student', 'course' and 'coursetostudent'
  */
 public class SQLiteController {
 	
@@ -35,15 +35,41 @@ public class SQLiteController {
 	    	initialized = true;
 	    	
 	    	// Check if the student table exists in the database
-	    	String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='student'";
-	    	ResultSet result = statement.executeQuery(query);
+	    	String queryStudent = "SELECT name FROM sqlite_master WHERE type='table' AND name='student'";
+	    	ResultSet resultStudent = statement.executeQuery(queryStudent);
 	    	
 	    	// If the student table does not exist in database, create it 
-	    	if(!result.next()){
+	    	if(!resultStudent.next()){
 	    		String createQuery = "CREATE TABLE student(" + 
 	    							 "email CHAR(20) PRIMARY KEY," +
 	    							 "fname CHAR(20)," + 
-	    							 "lname CHAR(20));";
+	    							 "lname CHAR(20)," +
+	    							 "pass CHAR(20));";
+	    		statement.executeUpdate(createQuery);
+	    	}
+	    	
+	    	// Check if the course table exists in the database
+	    	String queryCourse = "SELECT name FROM sqlite_master WHERE type='table' AND name='course'";
+	    	ResultSet resultCourse = statement.executeQuery(queryCourse);
+	    	
+	    	// If the course table does not exist in database, create it 
+	    	if(!resultCourse.next()){
+	    		String createQuery = "CREATE TABLE course(" + 
+	    							 "code CHAR(20) PRIMARY KEY," +
+	    							 "name CHAR(20)," + 
+	    							 "instructor CHAR(20));";
+	    		statement.executeUpdate(createQuery);
+	    	}
+	    	
+	    	// Check if the coursetostudent table exists in the database
+	    	String queryCourseToStudent = "SELECT name FROM sqlite_master WHERE type='table' AND name='coursetostudent'";
+	    	ResultSet resultCourseToStudent = statement.executeQuery(queryCourse);
+	    	
+	    	// If the coursetostudent table does not exist in database, create it 
+	    	if(!resultCourseToStudent.next()){
+	    		String createQuery = "CREATE TABLE coursetostudent(" + 
+	    							 "code CHAR(20)," +
+	    							 "email CHAR(20));";
 	    		statement.executeUpdate(createQuery);
 	    	}
 	    }

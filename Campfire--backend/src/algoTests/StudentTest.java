@@ -86,21 +86,21 @@ public class StudentTest {
 		
 		addCategories();
 		
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
 		assertEquals("Jane", s1.getFname());
 		assertEquals("Doe", s1.getLname());
 		assertEquals("J.Doe@gmail.com", s1.getEmail());
 		assertEquals(c1, s1.getCriteria());
 		
 		
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", c2, null);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
 		assertEquals("John", s2.getFname());
 		assertEquals("Smith", s2.getLname());
 		assertEquals("J.Smith@gmail.com", s2.getEmail());
 		assertEquals(c2, s2.getCriteria());
 		
 		
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", c3, null);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
 		assertEquals("Don", s3.getFname());
 		assertEquals("Donaldson", s3.getLname());
 		assertEquals("D.Donaldson@gmail.com", s3.getEmail());
@@ -112,8 +112,8 @@ public class StudentTest {
 		
 		addCategories();
 		
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1, null);
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", c2, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
 		
 		Holder hold = s1.GenerateScore(s2);
 		assertEquals(7.0, hold.getValue(), 0.01);
@@ -124,9 +124,9 @@ public class StudentTest {
 		
 		addCategories();
 		
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1, null);
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", c3, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
 		
 		Course course = new Course("CSC301", "Joey Freund");
 		
@@ -142,9 +142,9 @@ public class StudentTest {
 		
 		addCategories();
 		
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1, null);
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", c3, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
 		
 		Course course = new Course("CSC301", "Joey Freund");
 		
@@ -169,7 +169,7 @@ public class StudentTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testCannotAddSameStudentTwiceToTheSameCourse(){
 		addCategories();
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
 		Course course = new Course("CSC301", "Joey Freund");
 		course.addStudent(s1);
 		course.addStudent(s1);
@@ -179,8 +179,8 @@ public class StudentTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testCannotAddSameEmailTwiceToTheSameCourse(){
 		addCategories();
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1, null);
-		s2 = new Student("John", "Smith", "J.Doe@gmail.com", c2, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
+		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", c2, null);
 		Course course = new Course("CSC301", "Joey Freund");
 		course.addStudent(s1);
 		course.addStudent(s2);
@@ -191,9 +191,9 @@ public class StudentTest {
 	@Test
 	public void compareStudentToAll(){
 		addCategories();
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", c1, null);
-		s2 = new Student("John", "Smith", "J.Doe@gmail.com", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", c3, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
+		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", c2, null);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
 		
 		Holder holds12 = s1.GenerateScore(s2);
 		Holder holds13 = s1.GenerateScore(s3);
@@ -211,8 +211,8 @@ public class StudentTest {
 	//TESTING CRITERIA2 (CHECK BOX IDEA)
 	@Test
 	public void compareNoStudentsCriteria2(){
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", null, c5);
-		s2 = new Student("John", "Smith", "J.Doe@gmail.com", null, c6);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", null, c5);
+		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", null, c6);
 		
 		Holder hold = s1.GenerateScore2(s2);
 		assertEquals(0.0, hold.getValue(), 0.01);
@@ -220,8 +220,8 @@ public class StudentTest {
 	
 	public void compareOneStudentsCriteria2(){
 		addCategories2A();
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", null, c5);
-		s2 = new Student("John", "Smith", "J.Doe@gmail.com", null, c6);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", null, c5);
+		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", null, c6);
 		
 		Holder hold = s1.GenerateScore2(s2);
 		assertEquals(1.0, hold.getValue(), 0.01);
@@ -231,8 +231,8 @@ public class StudentTest {
 	public void compareMultipleStudentsCriteria2(){
 		addCategories2A();
 		addCategories2B();
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", null, c5);
-		s2 = new Student("John", "Smith", "J.Doe@gmail.com", null, c6);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", null, c5);
+		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", null, c6);
 		
 		Holder hold = s1.GenerateScore2(s2);
 		assertEquals(6.0, hold.getValue(), 0.01);
