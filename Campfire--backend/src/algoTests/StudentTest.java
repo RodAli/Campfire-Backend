@@ -128,7 +128,7 @@ public class StudentTest {
 		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
 		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
 		
-		Course course = new Course("CSC301", "Joey Freund");
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		
 		course.addStudent(s1);
 		course.addStudent(s2);
@@ -146,7 +146,7 @@ public class StudentTest {
 		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
 		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
 		
-		Course course = new Course("CSC301", "Joey Freund");
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		
 		course.addStudent(s1);
 		course.addStudent(s3);
@@ -170,7 +170,7 @@ public class StudentTest {
 	public void testCannotAddSameStudentTwiceToTheSameCourse(){
 		addCategories();
 		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
-		Course course = new Course("CSC301", "Joey Freund");
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		course.addStudent(s1);
 		course.addStudent(s1);
 		
@@ -181,7 +181,7 @@ public class StudentTest {
 		addCategories();
 		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
 		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", c2, null);
-		Course course = new Course("CSC301", "Joey Freund");
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		course.addStudent(s1);
 		course.addStudent(s2);
 		
