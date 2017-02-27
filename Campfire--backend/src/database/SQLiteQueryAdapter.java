@@ -17,6 +17,43 @@ import algorithms.Student;
  */
 public class SQLiteQueryAdapter {
 	
+	/*------------ PRIVATE METHODS -----------*/
+	
+	/**
+	 * Returns all the instances of student for a particular course that is specified.
+	 * @param controller instance of SQLiteController with a connection to database
+	 * @param code identifier for the course that we want to get students for
+	 * @return an ArrayList of student objects that are in this course
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	private static ArrayList<Student> getAllStudentsForCourse(SQLiteController controller, String code) throws SQLException, ClassNotFoundException{
+		// Get the connection instance
+		Connection connection = controller.getConnection();
+		PreparedStatement statement = connection.prepareStatement("SELECT * FROM coursetostudent NATURAL JOIN student WHERE code = ?");
+		statement.setString(1, code);
+		ResultSet set = controller.returnQuery(statement);
+		ArrayList<Student> studentList = new ArrayList<Student>();
+		// Build all the student objects and add them to the list
+		while (set.next()){
+			String email = set.getString("email");
+			String fname = set.getString("fname");
+			String lname = set.getString("lname");
+			String pass = set.getString("pass");
+			
+			studentList.add(new Student(fname, lname, email, pass, null, null));
+		}
+		
+		return studentList;
+	}
+	
+	//TODO
+	private static void removeStudentsInCourse(String code){
+		
+	}
+	
+	/*------------ PUBLIC METHODS -----------*/
+	
 	/**
 	 * Given a student object, stores this student in the student table in the database.
 	 * @param controller instance of SQLiteController with a connection to database
@@ -237,7 +274,11 @@ public class SQLiteQueryAdapter {
 				
 				Course course = new Course(code, name, instructor);
 				
-				// TODO add all the student objects in this course
+				// Get all the students in this course and attach to the course object
+				ArrayList<Student> studentList = getAllStudentsForCourse(controller, code);
+				for (int i = 0; i < studentList.size(); i++){
+					course.addStudent(studentList.get(i));
+				}
 				return course;
 			} else {
 				return null;
@@ -257,7 +298,11 @@ public class SQLiteQueryAdapter {
 	public static void deleteCourse(SQLiteController controller, String code) throws SQLException, ClassNotFoundException{
 		Connection connection = controller.getConnection();
 		PreparedStatement statement = connection.prepareStatement("DELETE FROM course WHERE code = ?");
-		//TODO also remove this course from the course to student table
+		statement.setString(1, code);
+		controller.updateQuery(statement);
+		
+		// Delete this course from the enrollment table
+		statement = connection.prepareStatement("DELETE FROM coursetostudent WHERE code = ?");
 		statement.setString(1, code);
 		controller.updateQuery(statement);
 	}
@@ -286,5 +331,24 @@ public class SQLiteQueryAdapter {
 		Connection connection = controller.getConnection();
 		PreparedStatement statement = connection.prepareStatement("DELETE FROM coursetostudent");
 		controller.updateQuery(statement);
+	}
+	
+	/**
+	 * Enroll a particular student in a course and store that record in the database.
+	 * @param controller instance of SQLiteController with a connection to database
+	 * @param email identifier of the user we want to add to enroll
+	 * @param code identifying what course we want to enroll this user in
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	public static void enrolStudentInCourse(SQLiteController controller, String email, String code) throws SQLException, ClassNotFoundException{
+		// Check that this student exists and that the course exists in the database
+		if (studentExists(controller, email) && courseExists(controller, code)){
+			Connection connection = controller.getConnection();
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO coursetostudent VALUES (?,?)");
+			statement.setString(1, code);
+			statement.setString(2, email);
+			controller.updateQuery(statement);
+		}
 	}
 }
