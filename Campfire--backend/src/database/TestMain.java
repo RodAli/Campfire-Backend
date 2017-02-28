@@ -1,5 +1,6 @@
 package database;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -15,6 +16,26 @@ public class TestMain {
 		SQLiteController sqlcon = new SQLiteController();
 		
 		try {
+			setup(sqlcon);
+			
+			System.out.println(SQLiteQueryAdapter.courseExists(sqlcon, "CSC209"));
+			SQLiteQueryAdapter.enrolStudentInCourse(sqlcon, "joe@mail.com", "CSC209");
+			Course course = SQLiteQueryAdapter.getCourse(sqlcon, "CSC209");
+			ArrayList<Student> s = course.getStudents();
+			
+			for (int i = 0; i < s.size(); i++){
+				System.out.println(s.get(i).getEmail());
+			}
+			
+			sqlcon.closeConnectionToDB();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private static void setup(SQLiteController sqlcon){
+		try {
 			SQLiteQueryAdapter.deleteAllCourses(sqlcon);
 			SQLiteQueryAdapter.deleteAllStudents(sqlcon);
 			
@@ -26,38 +47,17 @@ public class TestMain {
 			SQLiteQueryAdapter.addStudent(sqlcon, stu2);
 			SQLiteQueryAdapter.addStudent(sqlcon, stu3);
 			
-			ArrayList<Student> allStudents = SQLiteQueryAdapter.allStudents(sqlcon);
+			Course course1 = new Course("CSC108", "Intro to Programming", "Paul Gries");
+			Course course2 = new Course("CSC209", "Object Oriented Programming", "Diane Horton");
+			SQLiteQueryAdapter.addCourse(sqlcon, course1);
+			SQLiteQueryAdapter.addCourse(sqlcon, course2);
 			
-			for(int i = 0; i < allStudents.size(); i++){
-				String text = allStudents.get(i).getEmail() + "\t" + 
-								allStudents.get(i).getFname() + "\t" + 
-								allStudents.get(i).getLname() + "\t" +
-								allStudents.get(i).getPass();
-				System.out.println(text);
-			}
 			
-			System.out.println(SQLiteQueryAdapter.studentExists(sqlcon, "mark@mail.com"));
-			System.out.println(SQLiteQueryAdapter.getStudent(sqlcon, "lucy@mail.com").getEmail());
-			System.out.println("-----------------------------------------");
-			
-			Course course = new Course("CSC108", "Intro to Programming", "Paul Gries");
-			SQLiteQueryAdapter.addCourse(sqlcon, course);
-			
-			ArrayList<Course> allCourses = SQLiteQueryAdapter.allCourses(sqlcon);
-			for(int i = 0; i < allCourses.size(); i++){
-				String text = allCourses.get(i).getCourseCode() + "\t" + 
-								allCourses.get(i).getName() + "\t" + 
-								allCourses.get(i).getInstructor();
-				System.out.println(text);
-			}
-			System.out.println(SQLiteQueryAdapter.courseExists(sqlcon, "CSC108"));
-			System.out.println(SQLiteQueryAdapter.getCourse(sqlcon, "CSC108").getCourseCode());
-			
-			sqlcon.closeConnectionToDB();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-		
 	}
 
 }
