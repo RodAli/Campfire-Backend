@@ -3,22 +3,30 @@ package algorithms;
 import java.util.ArrayList;
 
 /*
- * A Course with students. Course name is a distinguishing 
+ * A Course with students. Course code is a distinguishing 
  * feature.
  * 
  */
 public class Course {
-
+	
+	// Course code is unique
+	private String courseCode;
+	// Full name of the course
 	private String name;
-	private String instructor; //Unneeded? Here just in case.
+	private String instructor;
 	
 	//All the students in this course.
 	private ArrayList<Student> Students = new ArrayList<Student>();
 	
-	public Course(String name, String instructor) {
+	public Course(String courseCode, String name, String instructor) {
 		super();
+		this.courseCode = courseCode;
 		this.name = name;
 		this.instructor = instructor;
+	}
+
+	public String getCourseCode() {
+		return courseCode;
 	}
 
 	public String getName() {

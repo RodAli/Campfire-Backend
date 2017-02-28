@@ -1,11 +1,13 @@
 package database;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import algorithms.Student;
 import algorithms.Category;
 import algorithms.Comparable;
+import algorithms.Course;
 
 public class TestMain {
 
@@ -14,28 +16,48 @@ public class TestMain {
 		SQLiteController sqlcon = new SQLiteController();
 		
 		try {
-			ArrayList<Category> blank = new ArrayList<Category>();
-			Student stu = new Student("Joe", "Lulu", "asdf@mail.com", blank);
+			setup(sqlcon);
 			
-			//SQLiteQueryAdapter.addStudent(sqlcon, stu);
+			System.out.println(SQLiteQueryAdapter.courseExists(sqlcon, "CSC209"));
+			SQLiteQueryAdapter.enrolStudentInCourse(sqlcon, "joe@mail.com", "CSC209");
+			Course course = SQLiteQueryAdapter.getCourse(sqlcon, "CSC209");
+			ArrayList<Student> s = course.getStudents();
 			
-			ArrayList<Student> allStudents = SQLiteQueryAdapter.allStudents(sqlcon);
-			
-			for(int i = 0; i < allStudents.size(); i++){
-				String text = allStudents.get(i).getEmail() + "\t" + 
-								allStudents.get(i).getFname() + "\t" + 
-								allStudents.get(i).getLname();
-				System.out.println(text);
+			for (int i = 0; i < s.size(); i++){
+				System.out.println(s.get(i).getEmail());
 			}
-			
-			System.out.println(SQLiteQueryAdapter.studentExists(sqlcon, "goo@mail.com"));
 			
 			sqlcon.closeConnectionToDB();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private static void setup(SQLiteController sqlcon){
+		try {
+			SQLiteQueryAdapter.deleteAllCourses(sqlcon);
+			SQLiteQueryAdapter.deleteAllStudents(sqlcon);
+			
+			Student stu1 = new Student("Joe", "Lulu", "joe@mail.com", "pass1", null, null);
+			Student stu2 = new Student("Mark", "Savage", "mark@mail.com", "pass2", null, null);
+			Student stu3 = new Student("Lucy", "Vander", "lucy@mail.com", "pass3", null, null);
+			
+			SQLiteQueryAdapter.addStudent(sqlcon, stu1);
+			SQLiteQueryAdapter.addStudent(sqlcon, stu2);
+			SQLiteQueryAdapter.addStudent(sqlcon, stu3);
+			
+			Course course1 = new Course("CSC108", "Intro to Programming", "Paul Gries");
+			Course course2 = new Course("CSC209", "Object Oriented Programming", "Diane Horton");
+			SQLiteQueryAdapter.addCourse(sqlcon, course1);
+			SQLiteQueryAdapter.addCourse(sqlcon, course2);
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
