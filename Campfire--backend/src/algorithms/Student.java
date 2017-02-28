@@ -18,16 +18,28 @@ public class Student {
 	private String fname;
 	private String lname;
 	private String email;
-	private ArrayList<Comparable> criteria;
+	private String pass;
+	private ArrayList<Comparable> criteria2;
+	private ArrayList<Category> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
-	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();;
+	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, ArrayList<Comparable> criteria) {
+	public Student(String fname, String lname, String email, String pass, ArrayList<Category> criteria, ArrayList<Comparable> criteria2) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
+		this.pass = pass;
 		this.criteria = criteria;
+		this.criteria2 = criteria2;
+	}
+	
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 
 	public String getFname() {
@@ -43,8 +55,12 @@ public class Student {
 	public String getEmail() {
 		return email;
 	}
-
-	public ArrayList<Comparable> getCriteria() {
+	
+	public ArrayList<Comparable> getCriteria2(){
+		return criteria2;
+	}
+	
+	public ArrayList<Category> getCriteria(){
 		return criteria;
 	}
 
@@ -92,15 +108,33 @@ public class Student {
 	 * and Student s.
 	 * 
 	 */
+	
+	//This method is used for the ArrayList<Category>
 	public Holder GenerateScore(Student s){
-		double aggregate = 0;
-		for (Comparable c : this.getCriteria()){
-			//@Vlad -- this is the line that needs to be fixed by adding a public static final ID field
-			//to every comparable and looking for the comparables with the same IDs
-			aggregate += c.Compare(s.getCriteria().get(this.getCriteria().indexOf(c)));
+		double totalScore = 0;
+		for (Category thisStudent : this.getCriteria()){
+			for(Category otherStudent : s.getCriteria()){
+				if(thisStudent.getCategory() == otherStudent.getCategory()){
+					totalScore += Math.abs(thisStudent.getIndex() - otherStudent.getIndex());
+				}
+			}
 		}
-		return new Holder(aggregate);
+		return new Holder(totalScore);
 	}
+	
+	//This method is used for the ArrayList<Comparable>
+	public Holder GenerateScore2(Student s){
+		double totalScore = 0;
+		for (Comparable thisStudent : this.getCriteria2()){
+			for(Comparable otherStudent : s.getCriteria2()){
+				if(thisStudent.getID() == otherStudent.getID()){
+					totalScore += thisStudent.Compare(otherStudent);
+				}
+			}
+		}
+		return new Holder(totalScore);
+	}
+	
 	
 	/*
 	 * Fills up the matchvalues HashMap for Course course
