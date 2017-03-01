@@ -7,9 +7,9 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-
+import algorithms.HobbiesCriteria;
 import algorithms.ProgrammingLanguagesCriteria;
-import algorithms.testCategoryA;
+
 
 /*
  * Implicitly tests ArrayCriteria
@@ -44,12 +44,14 @@ public class ProgrammingLanguagesCriteriaTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void TestCompare2DifferentCriteria() {
-		testCategoryA tA = new testCategoryA(4);
+		ArrayList<String> S1 = new ArrayList<String>(Arrays.asList("Eating", "Walking", "Grooming Cats"));
+		HobbiesCriteria H1 = new HobbiesCriteria(S1);
+		
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("Java", "C", "C++", "HTML"));
 		
 		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2);
 		
-		PL2.Compare(tA);
+		PL2.Compare(H1);
 		
 	}
 	
