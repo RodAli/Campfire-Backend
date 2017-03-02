@@ -1,4 +1,4 @@
-package com.example.rod.database;
+package database;
 
 import android.provider.BaseColumns;
 

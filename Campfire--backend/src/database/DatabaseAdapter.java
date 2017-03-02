@@ -1,4 +1,4 @@
-package com.example.rod.database;
+package database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -74,6 +74,7 @@ public class DatabaseAdapter {
             String pass = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_PASS));
             String description = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_DESCRIPTION));
             stu = new Student(fname, lname, email, pass, null, null);
+            stu.setDescription(description);
         }
 
         return stu;
@@ -133,5 +134,14 @@ public class DatabaseAdapter {
         // TODO get all the students enrolled in this course and attach to this object
 
         return course;
+    }
+
+    /**
+     * Clear the entire database of all its data.
+     */
+    public void wipe(){
+        SQLiteDatabase db = dbh.getWritableDatabase();
+        db.delete(DatabaseContract.StudentContract.TABLE_NAME, null, null);
+        db.delete(DatabaseContract.StudentContract.TABLE_NAME, null, null);
     }
 }
