@@ -29,11 +29,6 @@ public abstract class HashMapCriteria implements Comparable{
 		return score;
 	}
 	
-	//Basic Function to create the map where key is the day and values are a list of times.
-	public void generateSchedule (String day, ArrayList<String> time){
-		 this.schedule.put(day, time);
-	}
-	
 	public HashMap<String, ArrayList<String>> getMap(){
 		return schedule;
 	}
