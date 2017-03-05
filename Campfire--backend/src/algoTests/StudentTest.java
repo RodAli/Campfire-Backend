@@ -134,21 +134,21 @@ public class StudentTest {
 		assertEquals("Jane", s1.getFname());
 		assertEquals("Doe", s1.getLname());
 		assertEquals("J.Doe@gmail.com", s1.getEmail());
-		assertEquals(c1, s1.getCriteria2());
+		assertEquals(c1, s1.getCriteria());
 		
 		
 		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
 		assertEquals("John", s2.getFname());
 		assertEquals("Smith", s2.getLname());
 		assertEquals("J.Smith@gmail.com", s2.getEmail());
-		assertEquals(c2, s2.getCriteria2());
+		assertEquals(c2, s2.getCriteria());
 		
 		
 		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
 		assertEquals("Don", s3.getFname());
 		assertEquals("Donaldson", s3.getLname());
 		assertEquals("D.Donaldson@gmail.com", s3.getEmail());
-		assertEquals(c3, s3.getCriteria2());
+		assertEquals(c3, s3.getCriteria());
 	}
 	
 	@Test
