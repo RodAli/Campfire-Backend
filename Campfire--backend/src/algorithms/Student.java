@@ -25,7 +25,7 @@ public class Student {
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, String pass, ArrayList<Category> criteria, ArrayList<Comparable> criteria2) {
+	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria2, ArrayList<Category> criteria) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
@@ -59,10 +59,6 @@ public class Student {
 	
 	public ArrayList<Comparable> getCriteria2(){
 		return criteria2;
-	}
-	
-	public ArrayList<Category> getCriteria(){
-		return criteria;
 	}
 
 	public HashMap<String, HashMap<Student, Holder>> getMatchvalues() {
@@ -118,18 +114,6 @@ public class Student {
 	 * 
 	 */
 	
-	//This method is used for the ArrayList<Category>
-	public Holder GenerateScore(Student s){
-		double totalScore = 0;
-		for (Category thisStudent : this.getCriteria()){
-			for(Category otherStudent : s.getCriteria()){
-				if(thisStudent.getCategory() == otherStudent.getCategory()){
-					totalScore += Math.abs(thisStudent.getIndex() - otherStudent.getIndex());
-				}
-			}
-		}
-		return new Holder(totalScore);
-	}
 	
 	//This method is used for the ArrayList<Comparable>
 	public Holder GenerateScore2(Student s){
@@ -170,7 +154,7 @@ public class Student {
 		 */
 		if (flag){
 			for (Student s : course.getStudents()){
-				tmp.put(s, this.GenerateScore(s));
+				tmp.put(s, this.GenerateScore2(s));
 			}
 			this.getMatchvalues().put(course.getName(), tmp);
 			this.getAvailablematches().put(course.getName(), this.getallOtherCourseStudents(course));
@@ -184,7 +168,7 @@ public class Student {
 		 */
 		else {
 			for (Student s : this.getAvailablematches().get(course)){
-				tmp.put(s, this.GenerateScore(s));	
+				tmp.put(s, this.GenerateScore2(s));	
 			}
 			this.getMatchvalues().put(course.getName(), tmp);
 		}
