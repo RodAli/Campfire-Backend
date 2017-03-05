@@ -3,7 +3,11 @@ package algorithms;
 import java.util.ArrayList;
 
 public class ProgrammingLanguagesCriteria extends ArrayCriteria{
-	
+
+	/**
+	 * ID was matched
+	 */
+	private static final long serialVersionUID = 1952358793540268673L;
 	private final String ID = "Programming Languages";
 
 	public ProgrammingLanguagesCriteria(ArrayList<String> checks) {
