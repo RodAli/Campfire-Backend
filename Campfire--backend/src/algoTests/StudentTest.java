@@ -9,10 +9,7 @@ import java.util.HashMap;
 import org.junit.Test;
 
 import algorithms.Student;
-import algorithms.testCategoryA;
-import algorithms.testCategoryB;
 import algorithms.CSCCoursesCriteria;
-import algorithms.Category;
 import algorithms.Comparable;
 import algorithms.Course;
 import algorithms.ElectivesCriteria;
@@ -26,15 +23,6 @@ public class StudentTest {
 	private Student s1;
 	private Student s2;
 	private Student s3;
-	private ArrayList<String> S1 = new ArrayList<String>(Arrays.asList("Eating", "Walking", "Grooming Cats"));
-	private Comparable student1A = new HobbiesCriteria(S1);
-	private Category student1B = new Category("B", 6);
-	private Category student1C = new Category("C", 3);
-	private Category student2A = new Category("A", 1);
-	private Category student2C = new Category("C", 7);
-	private Category student3A = new Category("A", 7);
-	private Category student3D = new Category("D", 12);
-	private Category student4D = new Category("D", 12);
 	private ArrayList<Comparable> c1 = new ArrayList<Comparable>();
 	private ArrayList<Comparable> c2 = new ArrayList<Comparable>();
 	private ArrayList<Comparable> c3 = new ArrayList<Comparable>();
@@ -142,21 +130,21 @@ public class StudentTest {
 	public void testCreateStudents() {
 		addAll();
 		
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
 		assertEquals("Jane", s1.getFname());
 		assertEquals("Doe", s1.getLname());
 		assertEquals("J.Doe@gmail.com", s1.getEmail());
 		assertEquals(c1, s1.getCriteria2());
 		
 		
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
 		assertEquals("John", s2.getFname());
 		assertEquals("Smith", s2.getLname());
 		assertEquals("J.Smith@gmail.com", s2.getEmail());
 		assertEquals(c2, s2.getCriteria2());
 		
 		
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
 		assertEquals("Don", s3.getFname());
 		assertEquals("Donaldson", s3.getLname());
 		assertEquals("D.Donaldson@gmail.com", s3.getEmail());
@@ -167,26 +155,26 @@ public class StudentTest {
 	public void testGenerateScore() {
 		addAll();
 		
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
-		Holder hold = s1.GenerateScore2(s2);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		Holder hold = s1.GenerateScore(s2);
 		assertEquals(7.0, hold.getValue(), 0.01);
 	}
 	
 	@Test
 	public void compareAllStudents(){
 		addAll();
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
-		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
 		
-		Holder holds12 = s1.GenerateScore2(s2);
-		Holder holds13 = s1.GenerateScore2(s3);
-		Holder holds21 = s2.GenerateScore2(s1);
-		Holder holds23 = s2.GenerateScore2(s3);
-		Holder holds31 = s3.GenerateScore2(s1);
-		Holder holds32 = s3.GenerateScore2(s2);
+		Holder holds12 = s1.GenerateScore(s2);
+		Holder holds13 = s1.GenerateScore(s3);
+		Holder holds21 = s2.GenerateScore(s1);
+		Holder holds23 = s2.GenerateScore(s3);
+		Holder holds31 = s3.GenerateScore(s1);
+		Holder holds32 = s3.GenerateScore(s2);
 		
 		assertEquals(7.0, holds12.getValue(), 0.01);
 		assertEquals(6.0, holds13.getValue(), 0.01);
@@ -200,9 +188,9 @@ public class StudentTest {
 	public void testMatchWithClass() {
 		addAll();
 		
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
 		
 		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		
@@ -220,9 +208,9 @@ public class StudentTest {
 		
 		addAll();
 		
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
 		
 		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		
@@ -250,9 +238,9 @@ public class StudentTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testCannotAddSameStudentTwiceToTheSameCourse(){
 		addAll();
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
-		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
 		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		course.addStudent(s1);
 		course.addStudent(s1);
@@ -262,9 +250,9 @@ public class StudentTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testCannotAddSameEmailTwiceToTheSameCourse(){
 		addAll();
-		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1, null);
-		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", c2, null);
-		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3, null);
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Doe@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
 		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		course.addStudent(s1);
 		course.addStudent(s2);

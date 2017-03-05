@@ -20,19 +20,17 @@ public class Student {
 	private String email;
 	private String pass;
 	private String description;
-	private ArrayList<Comparable> criteria2;
-	private ArrayList<Category> criteria;
+	private ArrayList<Comparable> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria2, ArrayList<Category> criteria) {
+	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.pass = pass;
 		this.criteria = criteria;
-		this.criteria2 = criteria2;
 	}
 	
 	public String getPass() {
@@ -58,7 +56,7 @@ public class Student {
 	}
 	
 	public ArrayList<Comparable> getCriteria2(){
-		return criteria2;
+		return criteria;
 	}
 
 	public HashMap<String, HashMap<Student, Holder>> getMatchvalues() {
@@ -116,7 +114,7 @@ public class Student {
 	
 	
 	//This method is used for the ArrayList<Comparable>
-	public Holder GenerateScore2(Student s){
+	public Holder GenerateScore(Student s){
 		double totalScore = 0;
 		for (Comparable thisStudent : this.getCriteria2()){
 			for(Comparable otherStudent : s.getCriteria2()){
@@ -154,7 +152,7 @@ public class Student {
 		 */
 		if (flag){
 			for (Student s : course.getStudents()){
-				tmp.put(s, this.GenerateScore2(s));
+				tmp.put(s, this.GenerateScore(s));
 			}
 			this.getMatchvalues().put(course.getName(), tmp);
 			this.getAvailablematches().put(course.getName(), this.getallOtherCourseStudents(course));
@@ -168,7 +166,7 @@ public class Student {
 		 */
 		else {
 			for (Student s : this.getAvailablematches().get(course)){
-				tmp.put(s, this.GenerateScore2(s));	
+				tmp.put(s, this.GenerateScore(s));	
 			}
 			this.getMatchvalues().put(course.getName(), tmp);
 		}
