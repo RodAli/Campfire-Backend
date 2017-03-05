@@ -220,6 +220,7 @@ public class StudentTest {
 		course.addStudent(s1);
 		course.addStudent(s3);
 		course.addStudent(s2);
+		
 		Student stu = s2.getBestClassMatch(course);
 		assertEquals("J.Doe@gmail.com", stu.getEmail());
 		
@@ -257,4 +258,20 @@ public class StudentTest {
 		course.addStudent(s1);
 		course.addStudent(s2);
 	}
+	
+	//STILL NEED TO MAKE SURE CORNER CASES WORK!
+	/*
+	@Test
+	public void testCompareNulls(){
+		addAll();
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", null);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", null);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", null);
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+		Holder holder = s1.GenerateScore(s2);
+		assertEquals(0.0, holder.getValue(), 0.01);
+	}*/
 }

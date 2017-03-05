@@ -55,7 +55,7 @@ public class Student {
 		return email;
 	}
 	
-	public ArrayList<Comparable> getCriteria2(){
+	public ArrayList<Comparable> getCriteria(){
 		return criteria;
 	}
 
@@ -116,8 +116,8 @@ public class Student {
 	//This method is used for the ArrayList<Comparable>
 	public Holder GenerateScore(Student s){
 		double totalScore = 0;
-		for (Comparable thisStudent : this.getCriteria2()){
-			for(Comparable otherStudent : s.getCriteria2()){
+		for (Comparable thisStudent : this.getCriteria()){
+			for(Comparable otherStudent : s.getCriteria()){
 				if(thisStudent.getID() == otherStudent.getID()){
 					totalScore += thisStudent.Compare(otherStudent);
 				}
