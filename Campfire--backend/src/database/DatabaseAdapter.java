@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
-import algorithms.Category;
 import algorithms.Comparable;
 import algorithms.Course;
 import algorithms.Student;
@@ -42,6 +40,13 @@ public class DatabaseAdapter {
         values.put(DatabaseContract.StudentContract.COLUMN_NAME_LNAME, student.getLname());
         values.put(DatabaseContract.StudentContract.COLUMN_NAME_PASS, student.getPass());
         values.put(DatabaseContract.StudentContract.COLUMN_NAME_DESCRIPTION, student.getDescription());
+        // Serialize the students comparables and store it as a string in the database
+        try {
+            String comparable = Serializer.serialize(student.getCriteria());
+            values.put(DatabaseContract.StudentContract.COLUMN_NAME_COMPARABLE, comparable);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         // Enter this student in the table
         db.insert(DatabaseContract.StudentContract.TABLE_NAME, null, values);
     }
@@ -77,11 +82,18 @@ public class DatabaseAdapter {
             String lname = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_LNAME));
             String pass = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_PASS));
             String description = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_DESCRIPTION));
-            ArrayList<Category> categories = new ArrayList<Category>();
-            ArrayList<Comparable> comparable = new ArrayList<Comparable>();
-            stu = new Student(fname, lname, email, pass, categories, comparable);
-            stu.setDescription(description);
+            // Deserialize the criteria text into a critieria arraylist and add to student object
+            String comparable = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_COMPARABLE));
+            try {
+                ArrayList<Comparable> comparableList = (ArrayList) Serializer.deserialize(comparable);
+                stu = new Student(fname, lname, email, pass, comparableList);
+                stu.setDescription(description);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
+
+        cursor.close();
 
         return stu;
     }
@@ -195,9 +207,6 @@ public class DatabaseAdapter {
      */
     public void wipe(){
         SQLiteDatabase db = dbh.getWritableDatabase();
-        dbh.getWritableDatabase();
-        db.delete(DatabaseContract.StudentContract.TABLE_NAME, null, null);
-        db.delete(DatabaseContract.CourseContract.TABLE_NAME, null, null);
-        db.delete(DatabaseContract.TakingContract.TABLE_NAME, null, null);
+        dbh.onUpgrade(db, dbh.DATABASE_VERSION, dbh.DATABASE_VERSION + 1);
     }
 }
