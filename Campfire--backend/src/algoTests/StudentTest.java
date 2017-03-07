@@ -272,6 +272,29 @@ public class StudentTest {
 		course.addStudent(s2);
 	}
 	
+	@Test
+	public void testGetBackCriteria(){
+		addAll();
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+
+		
+		/*
+		 * Calling the methods WITHOUT the toString() will just return them with
+		 * their respective type, thus you can manipulate, work and extract from them.
+		 * 
+		 */
+		
+		assertEquals("[CSC301, CSC369, CSC300]", s1.getCSCCourses().toString());
+		assertEquals("[History, Biology, Physics]", s1.getElectives().toString());
+		assertEquals("[Eating, Walking, Grooming Cats, Math]", s1.getHobbies().toString());
+		assertEquals("[Java, C, Racket]", s1.getProgramming().toString());
+		assertEquals("{Monday=[5, 6, 7], Tuesday=[1, 2, 3], Saturday=[0, 1, 2]}"
+				, s1.getCalendar().toString());
+		
+	}
+	
 	//STILL NEED TO MAKE SURE CORNER CASES WORK!
 	/*
 	@Test
