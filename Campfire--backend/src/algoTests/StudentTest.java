@@ -214,15 +214,27 @@ public class StudentTest {
 		
 		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
 		
-		/*
-		 * Switching order of addStudent(s3) and addStudent(s2) breaks the test case???
-		 */
-		course.addStudent(s1);
-		course.addStudent(s3);
-		course.addStudent(s2);
 		
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+		
+		/*
+		 * !!!!!!!!!!!!!!!!!!!!Important!!!!!!!!!!!!!!!!!!!
+		 * Need to call MatchWithClass(course, false) for every active
+		 * user whenever someone is added to the graph (except the person
+		 * who was just added).
+		 * Otherwise you will get a null pointer.
+		 */
+		s2.MatchWithClass(course, false);
+		s1.MatchWithClass(course, false);
+		
+	
+	
 		Student stu = s2.getBestClassMatch(course);
 		assertEquals("J.Doe@gmail.com", stu.getEmail());
+		
+	
 		
 		s2.notMatched(s3, course);
 		
@@ -233,6 +245,7 @@ public class StudentTest {
 		
 		Student stu3 = s2.getBestClassMatch(course);
 		assertNull(stu3);
+	
 		
 	}
 	

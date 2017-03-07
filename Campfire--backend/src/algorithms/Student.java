@@ -207,7 +207,7 @@ public class Student {
 		 * 
 		 */
 		else {
-			for (Student s : this.getAvailablematches().get(course)){
+			for (Student s : this.getAvailablematches().get(course.getName())){
 				tmp.put(s, this.GenerateScore(s));	
 			}
 			this.getMatchvalues().put(course.getName(), tmp);
