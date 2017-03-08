@@ -99,6 +99,33 @@ public class DatabaseAdapter {
     }
 
     /**
+     * Get all the students that are contained in the database.
+     * @return an ArrayList of all the students in the database
+     */
+    public ArrayList<Student> getAllStudents(){
+        // Get read only database
+        SQLiteDatabase db = this.dbh.getReadableDatabase();
+        // Run query to get all students with the email that was given
+        Cursor cursor = db.query(
+                DatabaseContract.StudentContract.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        ArrayList<Student> stuList = new ArrayList<Student>();
+        // Create all the student objects from the database and them to the array list
+        while(cursor.moveToNext()){
+            Student stu = getStudent(cursor.getString(cursor.getColumnIndex(DatabaseContract.TakingContract.COLUMN_NAME_EMAIL)));
+            stuList.add(stu);
+        }
+        return stuList;
+    }
+
+    /**
      * Add a course object to the database.
      * @param course object that will be stored as a course in the database
      */
@@ -162,6 +189,33 @@ public class DatabaseAdapter {
     }
 
     /**
+     * Get all the courses stored in the database.
+     * @return an ArrayList of all the courses
+     */
+    public ArrayList<Course> getAllCourses(){
+        // Get read only database
+        SQLiteDatabase db = this.dbh.getReadableDatabase();
+        // Run query to get all students with the email that was given
+        Cursor cursor = db.query(
+                DatabaseContract.CourseContract.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Pull all the course object in to an arraylist
+        ArrayList<Course> courseList = new ArrayList<Course>();
+        while(cursor.moveToNext()){
+            Course course = getCourse(cursor.getString(cursor.getColumnIndex(DatabaseContract.CourseContract.COLUMN_NAME_CODE)));
+            courseList.add(course);
+        }
+        return courseList;
+    }
+
+    /**
      * Add student email as taking course with identifier as code.
      * @param code of the course student is in
      * @param email of the student that is taking the course
@@ -177,6 +231,11 @@ public class DatabaseAdapter {
         db.insert(DatabaseContract.TakingContract.TABLE_NAME, null, values);
     }
 
+    /**
+     * Return all the
+     * @param code
+     * @return
+     */
     public ArrayList<Student> getStudentsInCourse(String code){
         // Get read only database
         SQLiteDatabase db = this.dbh.getReadableDatabase();
@@ -200,6 +259,36 @@ public class DatabaseAdapter {
             stuList.add(stu);
         }
         return stuList;
+    }
+
+    /**
+     * Return an arraylist of course codes that a given student is enrolled in.
+     * @param email the email of the student that we want to find what courses they are in
+     * @return an Arraylist of all the codes of the courses
+     */
+    public ArrayList<String> enrolledIn(String email){
+        // Get read only database
+        SQLiteDatabase db = this.dbh.getReadableDatabase();
+        // Create the where clause of the query
+        String selection = DatabaseContract.TakingContract.COLUMN_NAME_EMAIL + " = ?";
+        String[] selection_args = {email};
+        // Run query to get entries with the code given
+        Cursor cursor = db.query(
+                DatabaseContract.TakingContract.TABLE_NAME,
+                null,
+                selection,
+                selection_args,
+                null,
+                null,
+                null
+        );
+        ArrayList<String> codeList = new ArrayList<String>();
+        // Create all the student objects from the database and them to the array list
+        while(cursor.moveToNext()){
+            String code = cursor.getString(cursor.getColumnIndex(DatabaseContract.TakingContract.COLUMN_NAME_CODE));
+            codeList.add(code);
+        }
+        return codeList;
     }
 
     /**
