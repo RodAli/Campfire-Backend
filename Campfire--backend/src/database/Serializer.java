@@ -6,13 +6,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;	//TODO remove this
 import java.util.Arrays;
 
-import algorithms.Comparable; // TODO remove this
 import algorithms.HobbiesCriteria;
 import algorithms.CSCCoursesCriteria;
-import java.util.Base64;
+import android.util.Base64;
 
 /**
  * Class to provide two methods to serialize objects to a string and also deserialize strings to objects.
@@ -38,8 +36,8 @@ public final class Serializer {
 		ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
 		objectStream.writeObject(s);
 		objectStream.close();
-		
-		return Base64.getEncoder().encodeToString(byteStream.toByteArray());
+
+		return Base64.encodeToString(byteStream.toByteArray(), Base64.DEFAULT);
 	}
 	
 	/**
@@ -50,8 +48,8 @@ public final class Serializer {
 	 * @throws ClassNotFoundException
 	 */
 	public static Object deserialize(String s) throws IOException, ClassNotFoundException{
-		
-		byte data [] = Base64.getDecoder().decode(s);
+
+		byte data [] = Base64.decode(s, Base64.DEFAULT);
 		ObjectInputStream objectStream = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object obj = objectStream.readObject();
 		objectStream.close();
