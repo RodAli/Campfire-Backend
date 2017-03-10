@@ -19,19 +19,18 @@ public class Student {
 	private String lname;
 	private String email;
 	private String pass;
-	private ArrayList<Comparable> criteria2;
-	private ArrayList<Category> criteria;
+	private String description;
+	private ArrayList<Comparable> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, String pass, ArrayList<Category> criteria, ArrayList<Comparable> criteria2) {
+	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.pass = pass;
 		this.criteria = criteria;
-		this.criteria2 = criteria2;
 	}
 	
 	public String getPass() {
@@ -56,11 +55,7 @@ public class Student {
 		return email;
 	}
 	
-	public ArrayList<Comparable> getCriteria2(){
-		return criteria2;
-	}
-	
-	public ArrayList<Category> getCriteria(){
+	public ArrayList<Comparable> getCriteria(){
 		return criteria;
 	}
 
@@ -68,6 +63,14 @@ public class Student {
 		return matchvalues;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	/*
 	 * Gets the Hashmap of students to compatibility values for Course course.
 	 * 
@@ -78,6 +81,48 @@ public class Student {
 	
 	public HashMap<String, ArrayList<Student>> getAvailablematches() {
 		return availablematches;
+	}
+	
+	public ArrayList<String> getCSCCourses(){
+		return findArrayComparable("Previous CSC Courses");
+	}
+	
+	public ArrayList<String> getElectives(){
+		return findArrayComparable("Electives");
+	}
+	
+	public ArrayList<String> getHobbies(){
+		return findArrayComparable("Hobbies");
+	}
+	
+	public ArrayList<String> getProgramming(){
+		return findArrayComparable("Programming Languages");
+	}
+	
+	public HashMap<String, ArrayList<String>> getCalendar(){
+		return (HashMap<String, ArrayList<String>>) findMapComparable("Time Schedule");
+	}
+	
+	/*
+	 * Extracts the criteria from comparable and returns it as an ArrayList 
+	 * For further information see test case - extractComparables
+	 */
+	public ArrayList<String> findArrayComparable(String search){
+		for(Comparable criteria: this.getCriteria()){
+			if(criteria.getID() == search){
+				return (ArrayList<String>) criteria.getItems();
+			}
+		}
+		return null;
+	}
+	
+	public HashMap<String, ArrayList<String>> findMapComparable(String search){
+		for(Comparable criteria: this.getCriteria()){
+			if(criteria.getID() == search){
+				return (HashMap<String, ArrayList<String>>) criteria.getItems();
+			}
+		}
+		return null;
 	}
 	
 	public void addAvailablematches(Course course, Student s) {
@@ -109,24 +154,12 @@ public class Student {
 	 * 
 	 */
 	
-	//This method is used for the ArrayList<Category>
-	public Holder GenerateScore(Student s){
-		double totalScore = 0;
-		for (Category thisStudent : this.getCriteria()){
-			for(Category otherStudent : s.getCriteria()){
-				if(thisStudent.getCategory() == otherStudent.getCategory()){
-					totalScore += Math.abs(thisStudent.getIndex() - otherStudent.getIndex());
-				}
-			}
-		}
-		return new Holder(totalScore);
-	}
 	
 	//This method is used for the ArrayList<Comparable>
-	public Holder GenerateScore2(Student s){
+	public Holder GenerateScore(Student s){
 		double totalScore = 0;
-		for (Comparable thisStudent : this.getCriteria2()){
-			for(Comparable otherStudent : s.getCriteria2()){
+		for (Comparable thisStudent : this.getCriteria()){
+			for(Comparable otherStudent : s.getCriteria()){
 				if(thisStudent.getID() == otherStudent.getID()){
 					totalScore += thisStudent.Compare(otherStudent);
 				}
@@ -174,7 +207,7 @@ public class Student {
 		 * 
 		 */
 		else {
-			for (Student s : this.getAvailablematches().get(course)){
+			for (Student s : this.getAvailablematches().get(course.getName())){
 				tmp.put(s, this.GenerateScore(s));	
 			}
 			this.getMatchvalues().put(course.getName(), tmp);
