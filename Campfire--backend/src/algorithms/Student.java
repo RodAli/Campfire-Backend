@@ -24,6 +24,11 @@ public class Student {
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
+	//Data structures for a Course to Assignment to Student mapping
+	private HashMap<String, HashMap<Assignment, AssignmentGroup>> groupsForAssignment = new HashMap<>();
+	private HashMap<String, HashMap<Assignment, ArrayList<Student>>> savedAvailableMatches = new HashMap<>();
+	private HashMap<String, Assignment> curAssignmentForCourse = new HashMap<>();
+	
 	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria) {
 		super();
 		this.fname = fname;
@@ -248,4 +253,55 @@ public class Student {
 		this.getAvailablematches().get(course.getName()).remove(s);
 		
 	}
+	
+	///////////////////////////////////////////////////////////////
+	//Methods for tracking assignments and groups
+	
+	public void enroll(Course course){
+		this.groupsForAssignment.put(course.getName(), new HashMap<Assignment, AssignmentGroup>());
+		this.savedAvailableMatches.put(course.getName(), new HashMap<Assignment, ArrayList<Student>>());
+		this.curAssignmentForCourse.put(course.getName(), null);
+	}
+	
+	public void addAssignment(Course course, Assignment a){
+		this.groupsForAssignment.get(course.getName()).put(a, null);
+		this.savedAvailableMatches.get(course.getName()).put(a, this.getallOtherCourseStudents(course));
+		save(course);
+		load(course, a);
+	}
+	
+	private ArrayList<Student> copy(ArrayList<Student> src){
+		ArrayList<Student> dest = new ArrayList<>();
+		for (Student s : src){
+			dest.add(s);
+		}
+		return dest;
+	}
+	
+	public void save(Course course){
+		this.savedAvailableMatches.get(course.getName()).put(this.curAssignmentForCourse.get(course.getName()), copy(this.getAvailablematches().get(course.getName())));
+	}
+	
+	public void load(Course course, Assignment a){
+		this.availablematches.put(course.getName(), copy(this.savedAvailableMatches.get(course.getName()).get(a)));
+		this.curAssignmentForCourse.put(course.getName(), a);
+	}
+	
+	public void restoreMatches (Course course, Assignment a){
+		this.availablematches.put(course.getName(), this.savedAvailableMatches.get(course.getName()).put(a, this.getallOtherCourseStudents(course)));
+	}
+
+	public HashMap<String, HashMap<Assignment, AssignmentGroup>> getGroupsForAssignment() {
+		return groupsForAssignment;
+	}
+
+	public HashMap<String, HashMap<Assignment, ArrayList<Student>>> getSavedAvailableMatches() {
+		return savedAvailableMatches;
+	}
+
+	public HashMap<String, Assignment> getCurAssignmentForCourse() {
+		return curAssignmentForCourse;
+	}
+	
+	
 }
