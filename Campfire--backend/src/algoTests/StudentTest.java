@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.junit.Test;
 
 import algorithms.Student;
+import algorithms.Assignment;
 import algorithms.CSCCoursesCriteria;
 import algorithms.Comparable;
 import algorithms.Course;
@@ -310,4 +311,161 @@ public class StudentTest {
 		Holder holder = s1.GenerateScore(s2);
 		assertEquals(0.0, holder.getValue(), 0.01);
 	}*/
+	
+	
+	
+	@Test
+	public void testEnrollModifiesHashMaps() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		
+		
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+		
+		s2.MatchWithClass(course, false);
+		s1.MatchWithClass(course, false);
+		
+		s1.enroll(course);
+		
+		assertNotNull(s1.getGroupsForAssignment().get(course.getName()));
+		assertTrue(s1.getGroupsForAssignment().get(course.getName()).isEmpty());
+		
+		assertNotNull(s1.getSavedAvailableMatches().get(course.getName()));
+		assertTrue(s1.getSavedAvailableMatches().get(course.getName()).isEmpty());
+		
+		assertEquals(null, s1.getCurAssignmentForCourse().get(course.getName()));
+		
+	}
+	
+	@Test
+	public void testAddAssignmentWithOneAssignment() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		
+		
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+		
+		s2.MatchWithClass(course, false);
+		s1.MatchWithClass(course, false);
+		
+		s1.enroll(course);
+		Assignment a = new Assignment(course, 2);
+		
+		s1.addAssignment(course, a, true);
+		
+		assertEquals(null, s1.getGroupsForAssignment().get(course.getName()).get(a));
+		assertEquals(2, s1.getSavedAvailableMatches().get(course.getName()).get(a).size());
+		assertEquals(a, s1.getCurAssignmentForCourse().get(course.getName()));
+	}
+	
+	@Test
+	public void testSwappingAssignments() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		
+		
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+		
+		s2.MatchWithClass(course, false);
+		s1.MatchWithClass(course, false);
+		
+		s1.enroll(course);
+		Assignment a = new Assignment(course, 2);
+		
+		s1.addAssignment(course, a, true);
+		
+		assertEquals(null, s1.getGroupsForAssignment().get(course.getName()).get(a));
+		assertEquals(2, s1.getSavedAvailableMatches().get(course.getName()).get(a).size());
+		assertEquals(a, s1.getCurAssignmentForCourse().get(course.getName()));
+		
+		Student stu = s1.getBestClassMatch(course);
+		assertEquals("D.Donaldson@gmail.com", stu.getEmail());
+		
+		s1.notMatched(s3, course);
+		assertEquals(1, s1.getAvailablematches().get(course.getName()).size());
+		
+		Assignment a2 = new Assignment(course, 3);
+		s1.addAssignment(course, a2, false);
+		
+		assertEquals(null, s1.getGroupsForAssignment().get(course.getName()).get(a2));
+		assertEquals(2, s1.getSavedAvailableMatches().get(course.getName()).get(a2).size());
+		assertEquals(a2, s1.getCurAssignmentForCourse().get(course.getName()));
+		
+		//A new assignment was swapped in so the new available matches were loaded
+		assertEquals(2, s1.getAvailablematches().get(course.getName()).size());
+		
+	}
+	
+	
+	@Test
+	public void testRestoreMatches() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		
+		
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+		
+		s2.MatchWithClass(course, false);
+		s1.MatchWithClass(course, false);
+		
+		s1.enroll(course);
+		Assignment a = new Assignment(course, 2);
+		
+		s1.addAssignment(course, a, true);
+		
+		assertEquals(null, s1.getGroupsForAssignment().get(course.getName()).get(a));
+		assertEquals(2, s1.getSavedAvailableMatches().get(course.getName()).get(a).size());
+		assertEquals(a, s1.getCurAssignmentForCourse().get(course.getName()));
+		
+		Student stu = s1.getBestClassMatch(course);
+		assertEquals("D.Donaldson@gmail.com", stu.getEmail());
+		
+		s1.notMatched(s3, course);
+		assertEquals(1, s1.getAvailablematches().get(course.getName()).size());
+		
+		s1.save(course);
+		
+		//Both the saved value and the currently loaded values are changed
+		s1.restoreMatches(course, s1.getCurAssignmentForCourse().get(course.getName()));
+		assertEquals(2, s1.getAvailablematches().get(course.getName()).size());
+		assertEquals(2, s1.getSavedAvailableMatches().get(course.getName()).get(a).size());
+		
+		//All the matches are restored
+		stu = s1.getBestClassMatch(course);
+		assertEquals("D.Donaldson@gmail.com", stu.getEmail());
+		
+	}
+	
 }

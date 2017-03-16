@@ -263,11 +263,17 @@ public class Student {
 		this.curAssignmentForCourse.put(course.getName(), null);
 	}
 	
-	public void addAssignment(Course course, Assignment a){
+	public void addAssignment(Course course, Assignment a, boolean first){
+		
 		this.groupsForAssignment.get(course.getName()).put(a, null);
 		this.savedAvailableMatches.get(course.getName()).put(a, this.getallOtherCourseStudents(course));
-		save(course);
-		load(course, a);
+		if (first){
+			this.curAssignmentForCourse.put(course.getName(), a);
+		}
+		else{
+			save(course);
+			load(course, a);
+		}
 	}
 	
 	private ArrayList<Student> copy(ArrayList<Student> src){
@@ -288,6 +294,7 @@ public class Student {
 	}
 	
 	public void restoreMatches (Course course, Assignment a){
+		this.savedAvailableMatches.get(course.getName()).put(a, copy(this.getallOtherCourseStudents(course)));
 		this.availablematches.put(course.getName(), this.savedAvailableMatches.get(course.getName()).put(a, this.getallOtherCourseStudents(course)));
 	}
 
