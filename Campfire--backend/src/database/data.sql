@@ -44,10 +44,8 @@ INSERT INTO taking VALUES ('quinn@mail.com', 'CSC309');
 
 INSERT INTO assignment VALUES (1000, 'A1', 'CSC207', 2);
 
-INSERT INTO assignmentgroup (2000, 1000);
-INSERT INTO assignmentgroup (2001, 1000);
+INSERT INTO assignmentgroup VALUES (2000, 1000);
+INSERT INTO assignmentgroup VALUES (2001, 1000);
 
-INSERT INTO membership ('rod@mail.com', 2000);
-INSERT INTO membership ('jonathan@mail.com', 2000);
-INSERT INTO membership ('adam@mail.com', 2001);
-INSERT INTO membership ('vlad@mail.com', 2001);
+INSERT INTO membership VALUES ('rod@mail.com', 2000), ('jonathan@mail.com', 2000);
+INSERT INTO membership VALUES ('adam@mail.com', 2001), ('vlad@mail.com', 2001);
