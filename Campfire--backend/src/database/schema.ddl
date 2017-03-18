@@ -24,3 +24,23 @@ CREATE TABLE taking (
 	email varchar(20) REFERENCES student,
 	code varchar(20) REFERENCES course
 );
+
+-- Stores the assignments that are part of each course
+CREATE TABLE assignment (
+	assignment_id integer PRIMARY KEY,
+	name varchar(20),
+	code varchar(20) REFERENCES course,
+	max_size integer NOT NULL,
+);
+
+-- Stores the groups formed in each assignment
+CREATE TABLE assignmentgroup (
+	group_id integer PRIMARY KEY,
+	assignment_id integer REFERENCES assignment
+);
+
+-- Stores the students that are part of each group
+CREATE TABLE membership (
+	email varchar(20),
+	group_id varchar(20)
+);

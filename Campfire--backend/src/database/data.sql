@@ -2,6 +2,9 @@
 TRUNCATE TABLE student CASCADE;
 TRUNCATE TABLE course CASCADE;
 TRUNCATE TABLE taking CASCADE;
+TRUNCATE TABLE assignment CASCADE;
+TRUNCATE TABLE assignmentgroup CASCADE;
+TRUNCATE TABLE membership CASCADE;
 
 -- Insert a set amount of starting data into the database
 INSERT INTO student VALUES ('rod@mail.com', 'Rod', 'Mazloomi', 'pass1', 'I like math', null);
@@ -39,3 +42,12 @@ INSERT INTO taking VALUES ('jonathan@mail.com', 'CSC309');
 INSERT INTO taking VALUES ('fullchee@mail.com', 'CSC309');
 INSERT INTO taking VALUES ('quinn@mail.com', 'CSC309');
 
+INSERT INTO assignment VALUES (1000, 'A1', 'CSC207', 2);
+
+INSERT INTO assignmentgroup (2000, 1000);
+INSERT INTO assignmentgroup (2001, 1000);
+
+INSERT INTO membership ('rod@mail.com', 2000);
+INSERT INTO membership ('jonathan@mail.com', 2000);
+INSERT INTO membership ('adam@mail.com', 2001);
+INSERT INTO membership ('vlad@mail.com', 2001);
