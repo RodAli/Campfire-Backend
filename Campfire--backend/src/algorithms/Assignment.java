@@ -5,16 +5,28 @@ import java.util.Random;
 
 public class Assignment {
 	
+	private int assignment_id;
+	private String name;
 	private Course course;
 	private int maxGroupSize;
 	private ArrayList<AssignmentGroup> groups = new ArrayList<>();
 	
-	public Assignment(Course c, int size){
+	public Assignment(int assignment_id, String name, Course c, int size){
 		if (size < 1){
 			throw new IllegalArgumentException();
 		}
+		this.assignment_id = assignment_id;
+		this.name = name;
 		maxGroupSize = size;
 		course = c;
+	}
+
+	public int getAssignment_id(){
+		return this.assignment_id;
+	}
+
+	public String getName(){
+		return this.name;
 	}
 
 	public Course getCourse() {
