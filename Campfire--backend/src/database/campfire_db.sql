@@ -53,6 +53,23 @@ CREATE TABLE membership (
   group_id integer REFERENCES assignmentgroup
 );
 
+-- Table that stores what students are part of which chat group
+CREATE TABLE chats (
+  chat_id integer NOT NULL,
+  email varchar(20) NOT NULL REFERENCES student,
+  PRIMARY KEY (chat_id, email)
+);
+
+-- Table that stores the individual messages sent by each student to the chat groups
+CREATE TABLE chat_line (
+  chat_id integer NOT NULL,
+  email varchar(20) NOT NULL, -- email of the user that is writing this message
+  content varchar(200),
+  sent_at timestamp not null default CURRENT_TIMESTAMP,
+  FOREIGN KEY (chat_id, email) REFERENCES chats(chat_id, email)
+    ON UPDATE CASCADE
+);
+
 
 -- Insert a set amount of starting data into the database
 INSERT INTO student VALUES ('rod@mail.com', 'Rod', 'Mazloomi', 'pass1', 'I like math', null);
@@ -97,3 +114,14 @@ INSERT INTO assignmentgroup VALUES (2001, 1000);
 
 INSERT INTO membership VALUES ('rod@mail.com', 2000), ('jonathan@mail.com', 2000);
 INSERT INTO membership VALUES ('adam@mail.com', 2001), ('vlad@mail.com', 2001);
+
+INSERT INTO chats VALUES (3000, 'rod@mail.com'), (3000, 'adam@mail.com'), (3000, 'vlad@mail.com'), (3000, 'fullchee@mail.com');
+INSERT INTO chats VALUES (3001, 'rod@mail.com'), (3001, 'adam@mail.com'), (3001, 'fullchee@mail.com');
+
+INSERT INTO chat_line VALUES (3000, 'rod@mail.com', 'Hey guys hows it going?');
+INSERT INTO chat_line VALUES (3000, 'vlad@mail.com', 'Good, im working on assignment 2');
+INSERT INTO chat_line VALUES (3000, 'adam@mail.com', 'Oh im going to start assignment 2 soon as well!');
+
+INSERT INTO chat_line VALUES (3001, 'rod@mail.com', 'Hey guys i dont like vlad lets kick him of the group');
+INSERT INTO chat_line VALUES (3001, 'adam@mail.com', 'Yeah i think so aswell');
+INSERT INTO chat_line VALUES (3001, 'rod@mail.com', 'k kool');
