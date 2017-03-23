@@ -14,6 +14,8 @@ public class DbAdapter {
 
     public static void addStudent(Student student){
 
+        //TODO Check that the student does not exist
+
         ArrayList<String> args = new ArrayList<String>();
         args.add(student.getEmail());
         args.add(student.getFname());
