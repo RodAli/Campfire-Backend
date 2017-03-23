@@ -262,8 +262,8 @@ public class Student {
 	
 	// My Campfire //
 	
-	public ArrayList<Student> getCampfire(){
-		return this.campfire.getMembers();
+	public MyCampfire getCampfire(){
+		return this.campfire;
 	}
 	
 	///////////////////////////////////////////////////////////////
