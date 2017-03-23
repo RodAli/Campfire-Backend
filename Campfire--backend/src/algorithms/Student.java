@@ -21,6 +21,10 @@ public class Student {
 	private String pass;
 	private String description;
 	private ArrayList<Comparable> criteria;
+	//// CAMPFIRE
+	private MyCampfire campfire;
+	private String sID;
+	////
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
@@ -30,12 +34,13 @@ public class Student {
 	private HashMap<String, Assignment> curAssignmentForCourse = new HashMap<>();
 	
 	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria) {
-		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.pass = pass;
 		this.criteria = criteria;
+		this.sID = pass;
+		campfire = new MyCampfire(this, sID);
 	}
 	
 	public String getPass() {
@@ -75,6 +80,7 @@ public class Student {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 
 	/*
 	 * Gets the Hashmap of students to compatibility values for Course course.
@@ -252,6 +258,12 @@ public class Student {
 		
 		this.getAvailablematches().get(course.getName()).remove(s);
 		
+	}
+	
+	// My Campfire //
+	
+	public ArrayList<Student> getCampfire(){
+		return this.campfire.getMembers();
 	}
 	
 	///////////////////////////////////////////////////////////////
