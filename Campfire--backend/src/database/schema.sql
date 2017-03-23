@@ -7,8 +7,10 @@ DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS course CASCADE;
 DROP TABLE IF EXISTS taking CASCADE;
 DROP TABLE IF EXISTS assignment CASCADE;
-DROP TABLE IF EXISTS assignmentgroup CASCADE;
-DROP TABLE IF EXISTS membership CASCADE;
+DROP TABLE IF EXISTS assignment_group CASCADE;
+DROP TABLE IF EXISTS group_membership CASCADE;
+DROP TABLE IF EXISTS chats CASCADE;
+DROP TABLE IF EXISTS chat_line CASCADE;
 
 -- Table to store all the students information
 CREATE TABLE student (
@@ -42,15 +44,15 @@ CREATE TABLE assignment (
 );
 
 -- Stores the groups formed in each assignment
-CREATE TABLE assignmentgroup (
+CREATE TABLE assignment_group (
   group_id integer PRIMARY KEY,
   assignment_id integer REFERENCES assignment
 );
 
 -- Stores the students that are part of each group
-CREATE TABLE membership (
+CREATE TABLE group_membership (
   email varchar(20) REFERENCES student,
-  group_id integer REFERENCES assignmentgroup
+  group_id integer REFERENCES assignment_group
 );
 
 -- Table that stores what students are part of which chat group
@@ -109,11 +111,11 @@ INSERT INTO taking VALUES ('quinn@mail.com', 'CSC309');
 
 INSERT INTO assignment VALUES (1000, 'A1', 'CSC207', 2);
 
-INSERT INTO assignmentgroup VALUES (2000, 1000);
-INSERT INTO assignmentgroup VALUES (2001, 1000);
+INSERT INTO assignment_group VALUES (2000, 1000);
+INSERT INTO assignment_group VALUES (2001, 1000);
 
-INSERT INTO membership VALUES ('rod@mail.com', 2000), ('jonathan@mail.com', 2000);
-INSERT INTO membership VALUES ('adam@mail.com', 2001), ('vlad@mail.com', 2001);
+INSERT INTO group_membership VALUES ('rod@mail.com', 2000), ('jonathan@mail.com', 2000);
+INSERT INTO group_membership VALUES ('adam@mail.com', 2001), ('vlad@mail.com', 2001);
 
 INSERT INTO chats VALUES (3000, 'rod@mail.com'), (3000, 'adam@mail.com'), (3000, 'vlad@mail.com'), (3000, 'fullchee@mail.com');
 INSERT INTO chats VALUES (3001, 'rod@mail.com'), (3001, 'adam@mail.com'), (3001, 'fullchee@mail.com');
