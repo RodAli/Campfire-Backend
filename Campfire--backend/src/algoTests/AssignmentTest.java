@@ -54,7 +54,7 @@ public class AssignmentTest {
 		course.addStudent(s2);
 		course.addStudent(s3);
 		
-		Assignment A1 = new Assignment(course, 2);
+		Assignment A1 = new Assignment(1, "A1", course, 2);
 		A1.populate();
 		
 		assertEquals(3, A1.getGroups().size());
@@ -88,7 +88,7 @@ public class AssignmentTest {
 		course.addStudent(s2);
 		course.addStudent(s3);
 		
-		Assignment A1 = new Assignment(course, 2);
+		Assignment A1 = new Assignment(1, "A1", course, 2);
 		A1.populate();
 		
 		AssignmentGroup g = A1.combineGroups(A1.getGroups().get(0), A1.getGroups().get(1));
@@ -111,7 +111,7 @@ public class AssignmentTest {
 		course.addStudent(s2);
 		course.addStudent(s3);
 		
-		Assignment A1 = new Assignment(course, 2);
+		Assignment A1 = new Assignment(1, "A1", course, 2);
 		A1.populate();
 		AssignmentGroup g2 = A1.getGroups().get(2);
 		
@@ -122,6 +122,7 @@ public class AssignmentTest {
 		AssignmentGroup g3 = A1.combineGroups(g2, g);
 		assertNull(g3);
 		
+		System.out.println(A1.getGroups().toString());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -138,12 +139,10 @@ public class AssignmentTest {
 		course.addStudent(s2);
 		course.addStudent(s3);
 		
-		Assignment A1 = new Assignment(course, 2);
+		Assignment A1 = new Assignment(1, "A1", course, 2);
 		A1.populate();
 		
 		AssignmentGroup g3 = new AssignmentGroup(new ArrayList<Student>(), -1);
-		
-		
 		A1.combineGroups(A1.getGroups().get(0), g3);
 		
 		

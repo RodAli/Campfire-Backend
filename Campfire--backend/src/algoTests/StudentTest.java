@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import algorithms.Student;
 import algorithms.Assignment;
+import algorithms.AssignmentGroup;
 import algorithms.CSCCoursesCriteria;
 import algorithms.Comparable;
 import algorithms.Course;
@@ -365,7 +366,7 @@ public class StudentTest {
 		s1.MatchWithClass(course, false);
 		
 		s1.enroll(course);
-		Assignment a = new Assignment(course, 2);
+		Assignment a = new Assignment(1, "A1", course, 2);
 		
 		s1.addAssignment(course, a, true);
 		
@@ -394,7 +395,7 @@ public class StudentTest {
 		s1.MatchWithClass(course, false);
 		
 		s1.enroll(course);
-		Assignment a = new Assignment(course, 2);
+		Assignment a = new Assignment(1, "A1", course, 2);
 		
 		s1.addAssignment(course, a, true);
 		
@@ -408,7 +409,7 @@ public class StudentTest {
 		s1.notMatched(s3, course);
 		assertEquals(1, s1.getAvailablematches().get(course.getName()).size());
 		
-		Assignment a2 = new Assignment(course, 3);
+		Assignment a2 = new Assignment(2, "A2", course, 3);
 		s1.addAssignment(course, a2, false);
 		
 		assertEquals(null, s1.getGroupsForAssignment().get(course.getName()).get(a2));
@@ -441,7 +442,7 @@ public class StudentTest {
 		s1.MatchWithClass(course, false);
 		
 		s1.enroll(course);
-		Assignment a = new Assignment(course, 2);
+		Assignment a = new Assignment(1, "A1", course, 2);
 		
 		s1.addAssignment(course, a, true);
 		
@@ -467,5 +468,4 @@ public class StudentTest {
 		assertEquals("D.Donaldson@gmail.com", stu.getEmail());
 		
 	}
-	
 }

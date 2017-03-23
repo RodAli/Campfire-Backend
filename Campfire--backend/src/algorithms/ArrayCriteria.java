@@ -10,6 +10,10 @@ public abstract class ArrayCriteria<T> implements Comparable{
 	private static final long serialVersionUID = 1952358793540268673L;
 	private ArrayList<T> values;
 	
+	/*
+	 * If our comparable is a generic arraylist this is where
+	 * we compare scores for that criteria.
+	 */
 	public ArrayCriteria(ArrayList<T> checks){
 		this.values = checks;
 	}
