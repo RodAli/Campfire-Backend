@@ -31,7 +31,9 @@ public final class Serializer {
 	 * @throws IOException
 	 */
 	public static String serialize(Serializable s){
-
+		if(s == null){
+			return null;
+		}
 		try {
 			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 			ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
@@ -52,7 +54,9 @@ public final class Serializer {
 	 * @throws ClassNotFoundException
 	 */
 	public static Object deserialize(String s) throws IOException, ClassNotFoundException{
-
+		if (s == null){
+			return null;
+		}
 		try {
 			byte data[] = Base64.decode(s, Base64.DEFAULT);
 			ObjectInputStream objectStream = new ObjectInputStream(new ByteArrayInputStream(data));

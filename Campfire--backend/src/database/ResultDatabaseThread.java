@@ -8,22 +8,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
-public class DatabaseThread extends AsyncTask<Void, Void, ResultSet>{
+public class ResultDatabaseThread extends AsyncTask<Void, Void, ResultSet>{
     // INFORMATION TO CONNECT TO THE DATABASE
     private final String url = "jdbc:postgresql://campfiredb.crno8vrpqmdl.ca-central-1.rds.amazonaws.com:5432/campfiredb?sslmode=require";
     private final String username = "camper";
     private final String password = "fireplace123";
 
     private Connection connection;
-    private Listener callback;
     private String query;
     private List<String> arguments;
 
-    public DatabaseThread(Listener callback, String query, List<String> arguments){
-        if (callback == null || query == null){
+    public ResultDatabaseThread(String query, List<String> arguments){
+        if (query == null){
             throw new IllegalArgumentException();
         }
-        this.callback = callback;
         this.query = query;
         this.arguments = arguments;
     }
@@ -46,18 +44,7 @@ public class DatabaseThread extends AsyncTask<Void, Void, ResultSet>{
         } catch (Exception e){
             e.printStackTrace();
         }
-
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(ResultSet set) {
-        callback.apply(set);
-    }
-
-    /* ---------- STATIC CALLBACK INTERFACE ---------- */
-    public interface Listener {
-        public void apply(ResultSet set);
     }
 }
 

@@ -46,11 +46,6 @@ public class UpdateDatabaseThread extends AsyncTask<Void, Void, Void>{
         }
         return null;
     }
-
-    /* ---------- STATIC CALLBACK INTERFACE ---------- */
-    public interface Listener {
-        public void apply(ResultSet set);
-    }
 }
 
 
