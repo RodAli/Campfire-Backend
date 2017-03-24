@@ -31,34 +31,34 @@ CREATE TABLE course (
 
 -- Table to let us know what students are in which course
 CREATE TABLE taking (
-  email varchar(20) REFERENCES student,
-  code varchar(20) REFERENCES course
+  email varchar(20) REFERENCES student ON UPDATE CASCADE ON DELETE CASCADE,
+  code varchar(20) REFERENCES course ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Stores the assignments that are part of each course
 CREATE TABLE assignment (
   assignment_id integer PRIMARY KEY,
   name varchar(20),
-  code varchar(20) REFERENCES course,
+  code varchar(20) REFERENCES course ON UPDATE CASCADE ON DELETE CASCADE,
   max_size integer NOT NULL
 );
 
 -- Stores the groups formed in each assignment
 CREATE TABLE assignment_group (
   group_id integer PRIMARY KEY,
-  assignment_id integer REFERENCES assignment
+  assignment_id integer REFERENCES assignment ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Stores the students that are part of each group
 CREATE TABLE group_membership (
-  email varchar(20) REFERENCES student,
-  group_id integer REFERENCES assignment_group
+  email varchar(20) REFERENCES student ON UPDATE CASCADE ON DELETE CASCADE,
+  group_id integer REFERENCES assignment_group ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Table that stores what students are part of which chat group
 CREATE TABLE chats (
   chat_id integer NOT NULL,
-  email varchar(20) NOT NULL REFERENCES student,
+  email varchar(20) NOT NULL REFERENCES student ON UPDATE CASCADE ON DELETE CASCADE,
   PRIMARY KEY (chat_id, email)
 );
 
@@ -68,8 +68,7 @@ CREATE TABLE chat_line (
   email varchar(20) NOT NULL, -- email of the user that is writing this message
   content varchar(200),
   sent_at timestamp not null default CURRENT_TIMESTAMP,
-  FOREIGN KEY (chat_id, email) REFERENCES chats(chat_id, email)
-    ON UPDATE CASCADE
+  FOREIGN KEY (chat_id, email) REFERENCES chats(chat_id, email) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
