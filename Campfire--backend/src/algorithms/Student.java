@@ -301,7 +301,53 @@ public class Student {
 				return grp;
 			}
 		}
-		throw new IllegalArgumentException("Name specified does not exist");
+		return null;
+	}
+	
+	public void unionMembers(Course crs, String name, Student newMember){
+		//Added the new member to all the members in that group already.
+		for(Student oldMember : this.getGroup(crs, name).getMembers()){
+			oldMember.getGroup(crs, name).addMember(newMember);
+		}
+		
+		//Check whether the new member is already in a group.
+		if(newMember.getGroup(crs, name) != null){
+			//Reset the new members group
+			newMember.getCampfires().get(crs).remove(newMember.getGroup(crs, name));
+		}
+		
+		//Fill his group up with all his new member(s)
+		newMember.createGroup(crs, name, this.getGroup(crs, name).getSize());
+		for(Student allMembers : this.getGroup(crs, name).getMembers()){
+			newMember.getGroup(crs, name).addMember(allMembers);
+		}
+		
+		//To avoid duplication add the new members to the lists last
+		this.getGroup(crs, name).addMember(newMember);
+		newMember.getGroup(crs, name).addMember(this);
+	}
+	
+	public void kickMember(Course crs, String name, Student removeMember){
+		
+		//To avoid errors, first remove the kicked member from students group
+		this.getGroup(crs, name).removeMember(removeMember);
+		
+		//remove the kicked member from the rest of the group members still in the group
+		for(Student oldMember : this.getGroup(crs, name).getMembers()){
+			oldMember.getGroup(crs, name).removeMember(removeMember);
+		}
+		
+		//Remove all kicked members old group members from his group
+		for(Student allMembers : this.getGroup(crs, name).getMembers()){
+			removeMember.getGroup(crs, name).removeMember(allMembers);
+		}
+		
+		//Remove the student kicking him from his members
+		removeMember.getGroup(crs, name).removeMember(this);
+		
+		//Remove the group from the kicked members menu
+		removeMember.getCampfires().get(crs).remove(this.getGroup(crs, name));
+		
 	}
 	
 	///////////////////////////////////////////////////////////////

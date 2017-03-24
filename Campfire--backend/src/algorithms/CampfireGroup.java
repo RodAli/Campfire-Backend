@@ -39,18 +39,20 @@ public class CampfireGroup {
 		
 		if(!this.group.contains(stu)){
 			this.group.add(stu);
+			this.current_size++;
 		}
 		
 	}
 		
 	public void removeMember(Student stu){
 		if(this.current_size == 0){
-			throw new IllegalArgumentException("Group is empty, cannot add more members");
+			throw new IllegalArgumentException("Group is empty, cannot remove members");
 		}
 		if(!this.group.contains(stu)){
 			throw new IllegalArgumentException("Student does not exist in this group");
 		}
 		this.group.remove(stu);
+		this.current_size--;
 	}
 	
 	public int getSize(){
@@ -59,6 +61,10 @@ public class CampfireGroup {
 	
 	public String getName(){
 		return this.name;
+	}
+	
+	public int getCurrentSize(){
+		return this.current_size;
 	}
 	
 }
