@@ -295,8 +295,15 @@ public class Student {
 		return new ArrayList<CampfireGroup>(temp);
 	}
 	
+	public CampfireGroup getGroup(Course course, String name){
+		for(CampfireGroup grp : this.campfires.get(course)){
+			if(grp.getName() == name){
+				return grp;
+			}
+		}
+		throw new IllegalArgumentException("Name specified does not exist");
+	}
 	
-
 	///////////////////////////////////////////////////////////////
 	//Methods for tracking assignments and groups
 	
