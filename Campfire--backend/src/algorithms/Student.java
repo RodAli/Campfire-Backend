@@ -14,7 +14,6 @@ import java.util.HashMap;
  * 
  */
 public class Student {
-
 	private String fname;
 	private String lname;
 	private String email;
@@ -23,6 +22,8 @@ public class Student {
 	private ArrayList<Comparable> criteria;
 	//// CAMPFIRE
 	private MyCampfire campfire;
+	//// Campfire advanced
+	private HashMap<Course, ArrayList<CampfireGroup>> campfires = new HashMap<Course, ArrayList<CampfireGroup>>();
 	private String sID;
 	////
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
@@ -266,6 +267,36 @@ public class Student {
 		return this.campfire;
 	}
 	
+	// Better Campfire //
+	public void createGroup(Course course, String name, int size){
+		
+		CampfireGroup group = new CampfireGroup(name, new ArrayList<Student>(), size);
+		if(campfires.get(course) == null){
+			this.campfires.put(course, new ArrayList<CampfireGroup>());
+		}
+		
+		ArrayList<CampfireGroup> checker = this.campfires.get(course);
+		for(CampfireGroup grp : checker){
+			if(grp.getName() == name){
+				throw new IllegalArgumentException("Group name already exists, please use a different name");
+			}
+		}
+		
+		this.campfires.get(course).add(group);
+		
+	}
+	
+	public HashMap<Course, ArrayList<CampfireGroup>> getCampfires(){
+		return this.campfires;
+	}
+	
+	public ArrayList<CampfireGroup> getCampfiresByCourse(Course course){
+		ArrayList<CampfireGroup> temp = this.campfires.get(course);
+		return new ArrayList<CampfireGroup>(temp);
+	}
+	
+	
+
 	///////////////////////////////////////////////////////////////
 	//Methods for tracking assignments and groups
 	
