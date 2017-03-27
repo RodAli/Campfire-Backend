@@ -14,13 +14,18 @@ import java.util.HashMap;
  * 
  */
 public class Student {
-
 	private String fname;
 	private String lname;
 	private String email;
 	private String pass;
 	private String description;
 	private ArrayList<Comparable> criteria;
+	//// CAMPFIRE
+	private MyCampfire campfire;
+	//// Campfire advanced
+	private HashMap<Course, ArrayList<CampfireGroup>> campfires = new HashMap<Course, ArrayList<CampfireGroup>>();
+	private String sID;
+	////
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
@@ -30,12 +35,13 @@ public class Student {
 	private HashMap<String, Assignment> curAssignmentForCourse = new HashMap<>();
 	
 	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria) {
-		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.pass = pass;
 		this.criteria = criteria;
+		this.sID = pass;
+		campfire = new MyCampfire(this, sID);
 	}
 	
 	public String getPass() {
@@ -75,6 +81,7 @@ public class Student {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 
 	/*
 	 * Gets the Hashmap of students to compatibility values for Course course.
@@ -251,6 +258,95 @@ public class Student {
 	public void notMatched(Student s, Course course){
 		
 		this.getAvailablematches().get(course.getName()).remove(s);
+		
+	}
+	
+	// My Campfire //
+	
+	public MyCampfire getCampfire(){
+		return this.campfire;
+	}
+	
+	// Better Campfire //
+	public void createGroup(Course course, String name, int size){
+		
+		CampfireGroup group = new CampfireGroup(name, new ArrayList<Student>(), size);
+		if(campfires.get(course) == null){
+			this.campfires.put(course, new ArrayList<CampfireGroup>());
+		}
+		
+		ArrayList<CampfireGroup> checker = this.campfires.get(course);
+		for(CampfireGroup grp : checker){
+			if(grp.getName() == name){
+				throw new IllegalArgumentException("Group name already exists, please use a different name");
+			}
+		}
+		
+		this.campfires.get(course).add(group);
+		
+	}
+	
+	public HashMap<Course, ArrayList<CampfireGroup>> getCampfires(){
+		return this.campfires;
+	}
+	
+	public ArrayList<CampfireGroup> getCampfiresByCourse(Course course){
+		ArrayList<CampfireGroup> temp = this.campfires.get(course);
+		return new ArrayList<CampfireGroup>(temp);
+	}
+	
+	public CampfireGroup getGroup(Course course, String name){
+		for(CampfireGroup grp : this.campfires.get(course)){
+			if(grp.getName() == name){
+				return grp;
+			}
+		}
+		return null;
+	}
+	
+	public void unionMembers(Course crs, String name, Student newMember){
+		//Added the new member to all the members in that group already.
+		for(Student oldMember : this.getGroup(crs, name).getMembers()){
+			oldMember.getGroup(crs, name).addMember(newMember);
+		}
+		
+		//Check whether the new member is already in a group.
+		if(newMember.getGroup(crs, name) != null){
+			//Reset the new members group
+			newMember.getCampfires().get(crs).remove(newMember.getGroup(crs, name));
+		}
+		
+		//Fill his group up with all his new member(s)
+		newMember.createGroup(crs, name, this.getGroup(crs, name).getSize());
+		for(Student allMembers : this.getGroup(crs, name).getMembers()){
+			newMember.getGroup(crs, name).addMember(allMembers);
+		}
+		
+		//To avoid duplication add the new members to the lists last
+		this.getGroup(crs, name).addMember(newMember);
+		newMember.getGroup(crs, name).addMember(this);
+	}
+	
+	public void kickMember(Course crs, String name, Student removeMember){
+		
+		//To avoid errors, first remove the kicked member from students group
+		this.getGroup(crs, name).removeMember(removeMember);
+		
+		//remove the kicked member from the rest of the group members still in the group
+		for(Student oldMember : this.getGroup(crs, name).getMembers()){
+			oldMember.getGroup(crs, name).removeMember(removeMember);
+		}
+		
+		//Remove all kicked members old group members from his group
+		for(Student allMembers : this.getGroup(crs, name).getMembers()){
+			removeMember.getGroup(crs, name).removeMember(allMembers);
+		}
+		
+		//Remove the student kicking him from his members
+		removeMember.getGroup(crs, name).removeMember(this);
+		
+		//Remove the group from the kicked members menu
+		removeMember.getCampfires().get(crs).remove(this.getGroup(crs, name));
 		
 	}
 	

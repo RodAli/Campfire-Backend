@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import algorithms.Student;
 import algorithms.Assignment;
+import algorithms.AssignmentGroup;
 import algorithms.CSCCoursesCriteria;
 import algorithms.Comparable;
 import algorithms.Course;
@@ -365,7 +366,7 @@ public class StudentTest {
 		s1.MatchWithClass(course, false);
 		
 		s1.enroll(course);
-		Assignment a = new Assignment(course, 2);
+		Assignment a = new Assignment(1, "A1", course, 2);
 		
 		s1.addAssignment(course, a, true);
 		
@@ -394,7 +395,7 @@ public class StudentTest {
 		s1.MatchWithClass(course, false);
 		
 		s1.enroll(course);
-		Assignment a = new Assignment(course, 2);
+		Assignment a = new Assignment(1, "A1", course, 2);
 		
 		s1.addAssignment(course, a, true);
 		
@@ -408,7 +409,7 @@ public class StudentTest {
 		s1.notMatched(s3, course);
 		assertEquals(1, s1.getAvailablematches().get(course.getName()).size());
 		
-		Assignment a2 = new Assignment(course, 3);
+		Assignment a2 = new Assignment(2, "A2", course, 3);
 		s1.addAssignment(course, a2, false);
 		
 		assertEquals(null, s1.getGroupsForAssignment().get(course.getName()).get(a2));
@@ -441,7 +442,7 @@ public class StudentTest {
 		s1.MatchWithClass(course, false);
 		
 		s1.enroll(course);
-		Assignment a = new Assignment(course, 2);
+		Assignment a = new Assignment(1, "A1", course, 2);
 		
 		s1.addAssignment(course, a, true);
 		
@@ -468,4 +469,285 @@ public class StudentTest {
 		
 	}
 	
+	/*
+	 * All test cases starting here are for CampfireGroup tests with multiple students.
+	 * Test cases include all corner cases that have been considered and basic implementation
+	 * to check whether the code is working.
+	 * 
+	 */
+	
+	@Test
+	public void testMakeBasicCampfireGroup() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+		
+		s2.MatchWithClass(course, false);
+		s1.MatchWithClass(course, false);
+		
+		s1.createGroup(course, "A1", 3);
+		
+		assertEquals(1, s1.getCampfires().get(course).size());
+		assertEquals(0, s1.getGroup(course, "A1").getCurrentSize());
+		
+	}
+	
+	@Test
+	public void testCreateMultipleCampfireGroupsWithMultipleCourses() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course301 = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		Course course343 = new Course("CSC343", "Introduction to Databases", "Diane Horton");
+		
+		course301.addStudent(s1);
+		course301.addStudent(s2);
+		course301.addStudent(s3);
+		course343.addStudent(s1);
+		course343.addStudent(s2);
+		course343.addStudent(s3);
+		
+		s2.MatchWithClass(course301, false);
+		s1.MatchWithClass(course301, false);
+		s2.MatchWithClass(course343, false);
+		s1.MatchWithClass(course343, false);
+		
+		s1.createGroup(course301, "A1", 7);
+		s1.createGroup(course343, "A1", 2);
+		s1.createGroup(course343, "A2", 3);
+		
+		assertEquals(2, s1.getCampfires().size());
+		
+		assertEquals(1, s1.getCampfires().get(course301).size());
+		assertEquals(2, s1.getCampfires().get(course343).size());
+
+		assertEquals(7, s1.getGroup(course301, "A1").getSize());
+		assertEquals(2, s1.getGroup(course343, "A1").getSize());
+		assertEquals(3, s1.getGroup(course343, "A2").getSize());
+	}
+	
+	@Test
+	public void CombiningMultipleStudentsWithMultipleGroupsAndMembers() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course301 = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		Course course343 = new Course("CSC343", "Introduction to Databases", "Diane Horton");
+		
+		course301.addStudent(s1);
+		course301.addStudent(s2);
+		course301.addStudent(s3);
+		course343.addStudent(s1);
+		course343.addStudent(s2);
+		course343.addStudent(s3);
+		
+		s2.MatchWithClass(course301, false);
+		s1.MatchWithClass(course301, false);
+		s2.MatchWithClass(course343, false);
+		s1.MatchWithClass(course343, false);
+		
+		s1.createGroup(course301, "A1", 7);
+		s1.createGroup(course343, "A1", 2);
+		s1.createGroup(course343, "A2", 3);
+		
+		s2.createGroup(course301, "A1", 7);
+		s2.createGroup(course343, "A1", 2);
+		s2.createGroup(course343, "A2", 3);
+		
+		s3.createGroup(course301, "A1", 7);
+		s3.createGroup(course343, "A1", 2);
+		s3.createGroup(course343, "A2", 3);
+		
+		//Put s1 and s2 into group A1-Course301
+		
+		s1.unionMembers(course301, "A1", s2);
+		
+		assertEquals(1, s1.getGroup(course301, "A1").getMembers().size());
+		assertEquals(1, s2.getGroup(course301, "A1").getMembers().size());
+		
+		//Put s3 and (s1 and s2) into group A1-Course301
+		
+		s1.unionMembers(course301, "A1", s3);
+		
+		assertEquals(2, s1.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s2.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s3.getGroup(course301, "A1").getMembers().size());
+		
+		//Put s3 and s1 into group A2-Course343
+		
+		s1.unionMembers(course343, "A2", s3);
+		
+		assertEquals(1, s1.getGroup(course343, "A2").getMembers().size());
+		assertEquals(1, s3.getGroup(course343, "A2").getMembers().size());
+		
+		/* s1 should now have Course301-A1 Members:[John, Don] 
+		 * 					  Course343-A1 Members:[]
+		 * 					  Course343-A2 Members:[Don]
+		 */
+		
+		ArrayList<String> course301A1group = new ArrayList<String>();
+		ArrayList<String> course343A1group = new ArrayList<String>();
+		ArrayList<String> course343A2group = new ArrayList<String>();
+		
+		for(Student stu : s1.getGroup(course301, "A1").getMembers()){
+			course301A1group.add(stu.getFname());
+		}
+		
+		assertEquals("[John, Don]", course301A1group.toString());
+		
+		for(Student stu : s1.getGroup(course343, "A1").getMembers()){
+			course343A1group.add(stu.getFname());
+		}
+		
+		assertEquals("[]", course343A1group.toString());
+		
+		for(Student stu : s1.getGroup(course343, "A2").getMembers()){
+			course343A2group.add(stu.getFname());
+		}
+		
+		assertEquals("[Don]", course343A2group.toString());
+		
+	}
+	
+	@Test
+	public void KickingMultipleStudentsWithMultipleGroupsAndMembers() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course301 = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		Course course343 = new Course("CSC343", "Introduction to Databases", "Diane Horton");
+		
+		course301.addStudent(s1);
+		course301.addStudent(s2);
+		course301.addStudent(s3);
+		course343.addStudent(s1);
+		course343.addStudent(s2);
+		course343.addStudent(s3);
+		
+		s2.MatchWithClass(course301, false);
+		s1.MatchWithClass(course301, false);
+		s2.MatchWithClass(course343, false);
+		s1.MatchWithClass(course343, false);
+		
+		s1.createGroup(course301, "A1", 7);
+		s1.createGroup(course343, "A1", 2);
+		s1.createGroup(course343, "A2", 3);
+		
+		s2.createGroup(course301, "A1", 7);
+		s2.createGroup(course343, "A1", 2);
+		s2.createGroup(course343, "A2", 3);
+		
+		s3.createGroup(course301, "A1", 7);
+		s3.createGroup(course343, "A1", 2);
+		s3.createGroup(course343, "A2", 3);
+		
+		//Fill Up all the Courses with Students
+		
+		s1.unionMembers(course301, "A1", s2);
+		s1.unionMembers(course301, "A1", s3);
+		s1.unionMembers(course343, "A1", s2);
+		s1.unionMembers(course343, "A1", s3);
+		s1.unionMembers(course343, "A2", s2);
+		s1.unionMembers(course343, "A2", s3);
+		
+		//Check that groups are full
+		
+		assertEquals(2, s1.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s2.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s3.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s1.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s2.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s3.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s1.getGroup(course343, "A2").getMembers().size());
+		assertEquals(2, s2.getGroup(course343, "A2").getMembers().size());
+		assertEquals(2, s3.getGroup(course343, "A2").getMembers().size());
+		
+		//Remove s1 from A1-Course343
+		
+		s2.kickMember(course343, "A1", s1);
+		
+		//assertNull(s1.getGroup(course343, "A1"));
+		
+		assertEquals(1, s2.getGroup(course343, "A1").getMembers().size());
+		assertEquals(1, s3.getGroup(course343, "A1").getMembers().size());
+		
+		//Remove s2 and s3 from A2-Course343
+		
+		s2.kickMember(course343, "A2", s3);
+		s1.kickMember(course343, "A2", s2);
+		
+		//assertNull(s2.getGroup(course343, "A2"));
+		//assertNull(s3.getGroup(course343, "A2"));
+
+		assertEquals(0, s1.getGroup(course343, "A2").getMembers().size());
+		
+		//Remove s3 from A1-Course343
+
+		s2.kickMember(course343, "A1", s3);
+		
+		//assertNull(s3.getGroup(course343, "A1"));
+		
+		assertEquals(0, s2.getGroup(course343, "A1").getMembers().size());
+		
+		
+		/* 
+		 * s2 should now have Course301-A1 Members:[Jane, Don] 
+		 * 					  Course343-A1 Members:[]
+		 * s1 should now have Course343-A2 Members:[]
+		 * 
+		 */
+		
+		ArrayList<String> course301A1group = new ArrayList<String>();
+		ArrayList<String> course343A1group = new ArrayList<String>();
+		ArrayList<String> course343A2group = new ArrayList<String>();
+		
+		for(Student stu : s2.getGroup(course301, "A1").getMembers()){
+			course301A1group.add(stu.getFname());
+		}
+		
+		assertEquals("[Jane, Don]", course301A1group.toString());
+		
+		for(Student stu : s2.getGroup(course343, "A1").getMembers()){
+			course343A1group.add(stu.getFname());
+		}
+		
+		assertEquals("[]", course343A1group.toString());
+		
+		for(Student stu : s1.getGroup(course343, "A2").getMembers()){
+			course343A2group.add(stu.getFname());
+		}
+		
+		assertEquals("[]", course343A2group.toString());
+		
+
+		
+	}
+	
+	/* 
+	 * 
+	 * Ran into a problem here will need attention - CORNER CASES!!!
+	 * 
+	 * */
+
 }
