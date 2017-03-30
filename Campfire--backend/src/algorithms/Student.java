@@ -1,7 +1,11 @@
 package algorithms;
 
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /*
  * A student using the app.
@@ -406,5 +410,33 @@ public class Student {
 		return curAssignmentForCourse;
 	}
 	
+	/////////////////////////////////////////////////////////////
+	////////////////Get a sorted list of matches for the class///
+	public Map<Student, Holder> getSortedMatches(Course course){
+		Map<Student, Holder> sortedMatches = new TreeMap<Student, Holder>(new MatchComparator(this.matchvalues.get(course.getName())));
+		sortedMatches.putAll(this.matchvalues.get(course.getName()));
+		return sortedMatches;
+		
+	}
+	
+	public List<Student> sortedStudents(Course course){
+		Map<Student, Holder> tmp = this.getSortedMatches(course);
+		Student[] sortedStudents = tmp.keySet().toArray(new Student[0]);
+		List<Student> students = new ArrayList<Student>();
+		for (Student s : sortedStudents){
+			students.add(s);
+		}
+		return students;
+	}
+	
+	public List<Student> validSortedStudents(Course course){
+		List<Student> students = sortedStudents(course);
+		for (Student s : students){
+			if (!this.getAvailablematches().get(course.getName()).contains(s)){
+				students.remove(s);
+			}
+		}
+		return students;
+	}
 	
 }
