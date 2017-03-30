@@ -41,15 +41,11 @@ public class UpdateDatabaseThread extends AsyncTask<Void, Void, Void>{
                 }
             }
             statement.execute();
+            this.connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
         return null;
-    }
-
-    /* ---------- STATIC CALLBACK INTERFACE ---------- */
-    public interface Listener {
-        public void apply(ResultSet set);
     }
 }
 

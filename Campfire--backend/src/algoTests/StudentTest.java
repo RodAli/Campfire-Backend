@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -749,5 +752,51 @@ public class StudentTest {
 	 * Ran into a problem here will need attention - CORNER CASES!!!
 	 * 
 	 * */
+	
+	////////////////////Testing TreeMap
+	@Test
+	public void testSortedMatches() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		
+		
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+		
+		/*
+		 * !!!!!!!!!!!!!!!!!!!!Important!!!!!!!!!!!!!!!!!!!
+		 * Need to call MatchWithClass(course, false) for every active
+		 * user whenever someone is added to the graph (except the person
+		 * who was just added).
+		 * Otherwise you will get a null pointer.
+		 */
+		s2.MatchWithClass(course, false);
+		s1.MatchWithClass(course, false);
+		
+	
+	
+		Student stu = s2.getBestClassMatch(course);
+		assertEquals("J.Doe@gmail.com", stu.getEmail());
+		
+		
+		List<Student> students = s2.validSortedStudents(course);
+		assertEquals("J.Doe@gmail.com", students.get(0).getEmail());
+		assertEquals("D.Donaldson@gmail.com", students.get(1).getEmail());
+		
+		s2.notMatched(s1, course);
+		students = s2.validSortedStudents(course);
+		assertEquals("D.Donaldson@gmail.com", students.get(0).getEmail());
+		
+		
+	
+		
+	}
 
 }
