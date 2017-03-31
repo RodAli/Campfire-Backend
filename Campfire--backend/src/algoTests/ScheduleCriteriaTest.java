@@ -31,8 +31,8 @@ public class ScheduleCriteriaTest {
 		S1.put("Saturday", STimesS1);
 		S2.put("Sunday", STimesS2);
 		
-		ScheduleCriteria SC1 = new ScheduleCriteria(S1);
-		ScheduleCriteria SC2 = new ScheduleCriteria(S2);
+		ScheduleCriteria SC1 = new ScheduleCriteria(S1, 2);
+		ScheduleCriteria SC2 = new ScheduleCriteria(S2, 2);
 		
 		double compareResult = SC1.Compare(SC2);
 		assertEquals(4.0, compareResult, 0.01);
@@ -56,8 +56,8 @@ public class ScheduleCriteriaTest {
 		S1.put("Saturday", STimesS1);
 		S2.put("Sunday", STimesS2);
 		
-		ScheduleCriteria SC1 = new ScheduleCriteria(S1);
-		ScheduleCriteria SC2 = new ScheduleCriteria(S2);
+		ScheduleCriteria SC1 = new ScheduleCriteria(S1, 2);
+		ScheduleCriteria SC2 = new ScheduleCriteria(S2, 2);
 		
 		double compareResult = SC1.Compare(SC2);
 		assertEquals(0.0, compareResult, 0.01);
@@ -68,15 +68,15 @@ public class ScheduleCriteriaTest {
 		HashMap<String, ArrayList<String>> S1 = new HashMap<String, ArrayList<String>>(); 
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("TEST", "CASE", "LOL"));
 		
-		ScheduleCriteria SC1 = new ScheduleCriteria(S1);
-		CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2);
+		ScheduleCriteria SC1 = new ScheduleCriteria(S1, 2);
+		CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2, 2);
 		
 		SC1.Compare(CSC2);
 	}
 	
 	@Test
 	public void TestEnsureIDIsValid() {
-		ScheduleCriteria SC1 = new ScheduleCriteria(null);
+		ScheduleCriteria SC1 = new ScheduleCriteria(null, 0);
 		
 		assertEquals("Time Schedule", SC1.getID());
 	}
