@@ -17,6 +17,7 @@ public abstract class HashMapCriteria<U, T> implements Comparable{
 		this.pref = preference;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public double Compare(Comparable other){
 		double score = 0;
 		for (T key: this.getMap().keySet()){
