@@ -370,16 +370,16 @@ public class Student {
 		}
 		
 		//Remove the group from the leaving members campfires menu
-		//this.getCampfires().get(crs).remove(this.getGroup(crs, name));
+		this.getCampfires().get(crs).remove(this.getGroup(crs, name));
 	}
 	
 	//Student leaves ALL groups he is in for a specific course.
 	public void byebyeCruelWorld(Course course){
-		for(CampfireGroup group : this.campfires.get(course)){
+		ArrayList<CampfireGroup> temp = new ArrayList<CampfireGroup>(this.getCampfires().get(course));
+		for(CampfireGroup group : temp){
 				this.leaveGroup(course, group.getName());
 				
 			}
-		this.getCampfires().get(course).removeAll(this.getCampfires().get(course));
 	}
 	
 	///////////////////////////////////////////////////////////////
