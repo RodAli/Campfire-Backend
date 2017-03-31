@@ -61,4 +61,9 @@ public class PinCourse {
 		this.CoursePins.remove(pin);
 	}
 	
+	//For database team to load the hashmap in right away
+	public void setPinGroup(HashMap<String, Course> setter){
+		this.CoursePins = setter;
+	}
+	
 }
