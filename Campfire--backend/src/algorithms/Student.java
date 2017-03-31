@@ -2,11 +2,9 @@ package algorithms;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 /*
  * A student using the app.
@@ -123,6 +121,7 @@ public class Student {
 	 * Extracts the criteria from comparable and returns it as an ArrayList 
 	 * For further information see test case - extractComparables
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<String> findArrayComparable(String search){
 		for(Comparable criteria: this.getCriteria()){
 			if(criteria.getID() == search){
@@ -132,6 +131,7 @@ public class Student {
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public HashMap<String, ArrayList<String>> findMapComparable(String search){
 		for(Comparable criteria: this.getCriteria()){
 			if(criteria.getID() == search){
@@ -370,14 +370,16 @@ public class Student {
 		}
 		
 		//Remove the group from the leaving members campfires menu
-		this.getCampfires().get(crs).remove(this.getGroup(crs, name));
+		//this.getCampfires().get(crs).remove(this.getGroup(crs, name));
 	}
 	
 	//Student leaves ALL groups he is in for a specific course.
 	public void byebyeCruelWorld(Course course){
 		for(CampfireGroup group : this.campfires.get(course)){
 				this.leaveGroup(course, group.getName());
+				
 			}
+		this.getCampfires().get(course).removeAll(this.getCampfires().get(course));
 	}
 	
 	///////////////////////////////////////////////////////////////
@@ -463,6 +465,37 @@ public class Student {
 			}
 		}
 		return students;
+	}
+	
+	/*
+	 * Removes all references to course from this student
+	 * and all references to this student from anything
+	 * to do with course.
+	 */
+	public void leaveCourse(Course course){
+		
+		//Leave all groups for course if there are groups
+		if(this.campfires.containsKey(course)){
+			byebyeCruelWorld(course);
+		}
+		
+		
+		//Remove course from all maps
+		this.campfires.remove(course);
+		this.matchvalues.remove(course.getName());
+		this.availablematches.remove(course.getName());
+		
+		//Remove student from the course's list of students
+		course.getStudents().remove(this);
+		
+		//For every other student in the course remove this 
+		//student from their available matches and matchvalues.
+		for (Student s: course.getStudents()){
+			s.getAvailablematches().get(course.getName()).remove(this);
+			s.getMatchvalues().get(course.getName()).remove(this);
+		}
+		
+		
 	}
 	
 }

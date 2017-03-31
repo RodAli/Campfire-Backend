@@ -20,6 +20,7 @@ public abstract class ArrayCriteria<T> implements Comparable{
 		this.pref = preference;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public double Compare(Comparable other){
 		double score = 0;
