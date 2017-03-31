@@ -65,7 +65,6 @@ public class Student {
 		return lname;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
@@ -308,6 +307,7 @@ public class Student {
 		return null;
 	}
 	
+	//A student adds another student to his group.
 	public void unionMembers(Course crs, String name, Student newMember){
 		//Added the new member to all the members in that group already.
 		for(Student oldMember : this.getGroup(crs, name).getMembers()){
@@ -331,6 +331,7 @@ public class Student {
 		newMember.getGroup(crs, name).addMember(this);
 	}
 	
+	//Student kicks a student out of the group
 	public void kickMember(Course crs, String name, Student removeMember){
 		
 		//To avoid errors, first remove the kicked member from students group
@@ -341,7 +342,7 @@ public class Student {
 			oldMember.getGroup(crs, name).removeMember(removeMember);
 		}
 		
-		//Remove all kicked members old group members from his group
+		//Remove all kicked members, old group members from his group
 		for(Student allMembers : this.getGroup(crs, name).getMembers()){
 			removeMember.getGroup(crs, name).removeMember(allMembers);
 		}
@@ -352,6 +353,18 @@ public class Student {
 		//Remove the group from the kicked members menu
 		removeMember.getCampfires().get(crs).remove(this.getGroup(crs, name));
 		
+	}
+	
+	//Student leaves the group
+	public void leaveGroup(Course crs, String name){
+		
+		//All the other students see the student leave the group.
+		for(Student oldMember : this.getGroup(crs, name).getMembers()){
+			oldMember.getGroup(crs, name).removeMember(this);
+		}
+		
+		//Student then leaves the group on his side
+		this.getGroup(crs, name).removeMember(this);
 	}
 	
 	///////////////////////////////////////////////////////////////
