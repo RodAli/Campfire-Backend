@@ -1,7 +1,6 @@
 package algorithms;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /*
  * The interface which all criteria need to implement.
