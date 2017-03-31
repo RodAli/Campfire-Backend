@@ -31,7 +31,7 @@ public class Student {
 	////
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
-	private Map<String, ArrayList<Student>> matchedStudents = new HashMap<>();
+	private Map<String, List<Student>> matchedStudents = new HashMap<>();
 	
 	//Data structures for a Course to Assignment to Student mapping
 	private HashMap<String, HashMap<Assignment, AssignmentGroup>> groupsForAssignment = new HashMap<>();
@@ -88,7 +88,7 @@ public class Student {
 	
 	
 
-	public Map<String, ArrayList<Student>> getMatchedStudents() {
+	public Map<String, List<Student>> getMatchedStudents() {
 		return matchedStudents;
 	}
 
