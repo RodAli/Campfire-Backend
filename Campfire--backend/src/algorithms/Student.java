@@ -65,7 +65,6 @@ public class Student {
 		return lname;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
