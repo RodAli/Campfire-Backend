@@ -510,11 +510,13 @@ public class Student {
 			this.matchedStudents.put(course.getName(), new ArrayList<Student>());
 		}
 		this.matchedStudents.get(course.getName()).add(s);
+		this.availablematches.get(course.getName()).remove(s);
 		
 		if (!s.getMatchedStudents().containsKey(course.getName())){
 			s.getMatchedStudents().put(course.getName(), new ArrayList<Student>());
 		}
 		s.getMatchedStudents().get(course.getName()).add(this);
+		s.getAvailablematches().get(course.getName()).remove(this);
 	}
 	
 }

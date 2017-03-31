@@ -1083,8 +1083,10 @@ public class StudentTest {
 		s2.match(course, s1);
 		assertTrue(s2.getMatchedStudents().containsKey(course.getName()));
 		assertTrue(s2.getMatchedStudents().get(course.getName()).contains(s1));
+		assertFalse(s2.getAvailablematches().get(course.getName()).contains(s1));
 		assertTrue(s1.getMatchedStudents().containsKey(course.getName()));
 		assertTrue(s1.getMatchedStudents().get(course.getName()).contains(s2));
+		assertFalse(s1.getAvailablematches().get(course.getName()).contains(s2));
 		
 		
 		
