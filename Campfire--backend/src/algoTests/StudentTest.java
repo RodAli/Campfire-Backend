@@ -6,20 +6,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Test;
 
 import algorithms.Student;
 import algorithms.Assignment;
-import algorithms.AssignmentGroup;
 import algorithms.CSCCoursesCriteria;
+import algorithms.CampfireGroup;
 import algorithms.Comparable;
 import algorithms.Course;
 import algorithms.ElectivesCriteria;
 import algorithms.HobbiesCriteria;
 import algorithms.Holder;
+import algorithms.PinCourse;
+import algorithms.PinGroup;
 import algorithms.ProgrammingLanguagesCriteria;
 import algorithms.ScheduleCriteria;
 
@@ -930,6 +929,84 @@ public class StudentTest {
 		
 	
 		
+	}
+	
+	/*
+	 * How to work with the new PIN and Student Test
+	 */
+	
+	@Test
+	public void testPINsystem(){
+		//I am going to be playing two roles, to make it more clear on what is going on (or should be I think)
+		//be going in the front end.
+		
+		//Lets make a students
+		Student stu = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", null);
+		Student stu2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		
+		//Assume someone creates a course
+		
+		//First initialize the PIN map for groups and courses
+		PinCourse allCourses = new PinCourse();
+		PinGroup allGroups = new PinGroup();
+		
+		//Create the course
+		Course course1 = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		
+		//Generate a PIN code for the course and put it in the map
+		allCourses.addPinCourse(course1);
+		
+		//Get the new PIN designated to the course (pretend that the prof gives this pin to students in class)
+		String PINc = allCourses.findPin(course1); 
+		
+		//Students go and use the PIN to enter into the course (you can have a checker if he enters the right pin)
+		allCourses.getCoursePins().get(PINc).addStudent(stu);
+		allCourses.getCoursePins().get(PINc).addStudent(stu2);
+		
+		//Since the student joined the course we will also add the course to the students campfires map. 
+		//But with no groups.
+		stu.getCampfires().put(allCourses.getCoursePins().get(PINc), new ArrayList<CampfireGroup>());
+		stu2.getCampfires().put(allCourses.getCoursePins().get(PINc), new ArrayList<CampfireGroup>());
+		
+		//Now the course has those students
+		assertTrue(course1.getStudents().contains(stu));
+		assertTrue(course1.getStudents().contains(stu2));
+		
+		//And the students are ready to make campfire groups for the added course
+		assertEquals(0, stu.getCampfires().get(course1).size());
+		assertEquals(0, stu2.getCampfires().get(course1).size());
+		
+		//Now the someone decides to make a group
+		CampfireGroup group1 = new CampfireGroup("A1", new ArrayList<Student>(), 4, 1152091);
+		
+		//Generate the PIN code for the group and put in the map
+		allGroups.addPinGroup(group1);
+		
+		//Get the new PIN designated to the groups (pretend that the prof gives this pin to students in class) 
+		String PINg = allGroups.findPin(group1);
+		
+		//Students then use the PIN to create the groups in their campfire.
+		stu.getCampfires().get(course1).add(allGroups.getGroupPins().get(PINg));
+		stu2.getCampfires().get(course1).add(allGroups.getGroupPins().get(PINg));
+		
+		//Now both students have that empty static group in their courses
+		assertTrue(stu.getCampfiresByCourse(course1).contains(group1));
+		assertTrue(stu2.getCampfiresByCourse(course1).contains(group1));
+		
+		/*
+		 * After this you are back to all the other test cases. Where you can manipulate 
+		 * the groups any way you want. The whole point of the PIN system is just to create
+		 * these static super groups and give further control of the formation. 
+		 */
+		
+		//Quick examples
+		//Adding both students to each others group
+		assertEquals(0, stu.getGroup(course1, group1.getName()).getMembers().size());
+		stu.unionMembers(course1, group1.getName(), stu2);
+		assertEquals(1, stu.getGroup(course1, group1.getName()).getMembers().size());
+		assertEquals(1, stu2.getGroup(course1, group1.getName()).getMembers().size());
+		
+		//And so on... Exactly the same as it always has been.
 	}
 
 }
