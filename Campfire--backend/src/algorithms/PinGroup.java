@@ -1,6 +1,7 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -10,8 +11,8 @@ public class PinGroup {
 	private Map<String, CampfireGroup> GroupPins;
 			
 	// Creates a map where a PIN is a special ID for each course
-	public PinGroup(CampfireGroup group) {
-		this.GroupPins.put(generatePin(), group);
+	public PinGroup() {
+		this.GroupPins = new HashMap<String, CampfireGroup>();
 	}
 			
 	// Generates a 15 Character PIN code for each course that is created
@@ -19,9 +20,21 @@ public class PinGroup {
 		String allCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String newPin = "";
 		Random random = new Random();
+		
 		while (newPin.length() < 15){
-		    newPin += allCharacters.charAt(random.nextInt(36));
+			newPin += allCharacters.charAt(random.nextInt(36));
 		}
+		
+		//Create a Unique PIN
+		for(String PINS : this.getGroupPins().keySet()){
+			if(PINS == newPin){
+				newPin = "";
+				while (newPin.length() < 15){
+					newPin += allCharacters.charAt(random.nextInt(36));
+				}
+			}
+		}
+		
 	    return newPin; 
 	}
 		
@@ -33,11 +46,22 @@ public class PinGroup {
 	// Extract the PIN for the given group
 	public String findPin(CampfireGroup group){
 		for(Entry<String, CampfireGroup> value : this.GroupPins.entrySet()){
-			if(group.equals(value.getValue())){
+			if(group == value.getValue()){
 				return value.getKey();
 			}
 		}
 		return null;
 	}
+	
+	//Add a Group with the designated PIN
+	public void addPinGroup(CampfireGroup group){
+		this.GroupPins.put(generatePin(), group);
+	}
+	
+	//Remove a Group by using the designated PIN
+	public void removePinGroup(String pin){
+		this.GroupPins.remove(pin);
+	}
+	
 
 }

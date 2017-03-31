@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 /*
  * A student using the app.
@@ -271,9 +272,9 @@ public class Student {
 	}
 	
 	// Better Campfire //
-	public void createGroup(Course course, String name, int size){
+	public void createGroup(Course course, String name, int size, int groupID){
 		
-		CampfireGroup group = new CampfireGroup(name, new ArrayList<Student>(), size);
+		CampfireGroup group = new CampfireGroup(name, new ArrayList<Student>(), size, groupID);
 		if(campfires.get(course) == null){
 			this.campfires.put(course, new ArrayList<CampfireGroup>());
 		}
@@ -321,7 +322,7 @@ public class Student {
 		}
 		
 		//Fill his group up with all his new member(s)
-		newMember.createGroup(crs, name, this.getGroup(crs, name).getSize());
+		newMember.createGroup(crs, name, this.getGroup(crs, name).getSize(), this.getGroup(crs, name).getGroupID());
 		for(Student allMembers : this.getGroup(crs, name).getMembers()){
 			newMember.getGroup(crs, name).addMember(allMembers);
 		}
@@ -363,8 +364,20 @@ public class Student {
 			oldMember.getGroup(crs, name).removeMember(this);
 		}
 		
-		//Student then leaves the group on his side
-		this.getGroup(crs, name).removeMember(this);
+		//Remove all old group members from leaving persons group
+		for(Student allMembers : this.getGroup(crs, name).getMembers()){
+			this.getGroup(crs, name).removeMember(allMembers);
+		}
+		
+		//Remove the group from the leaving members campfires menu
+		this.getCampfires().get(crs).remove(this.getGroup(crs, name));
+	}
+	
+	//Student leaves ALL groups he is in for a specific course.
+	public void byebyeCruelWorld(Course course){
+		for(CampfireGroup group : this.campfires.get(course)){
+				this.leaveGroup(course, group.getName());
+			}
 	}
 	
 	///////////////////////////////////////////////////////////////
