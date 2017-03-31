@@ -1026,13 +1026,7 @@ public class StudentTest {
 		course.addStudent(s2);
 		course.addStudent(s3);
 		
-		/*
-		 * !!!!!!!!!!!!!!!!!!!!Important!!!!!!!!!!!!!!!!!!!
-		 * Need to call MatchWithClass(course, false) for every active
-		 * user whenever someone is added to the graph (except the person
-		 * who was just added).
-		 * Otherwise you will get a null pointer.
-		 */
+		
 		s2.MatchWithClass(course, false);
 		s1.MatchWithClass(course, false);
 		
@@ -1060,5 +1054,44 @@ public class StudentTest {
 	
 		
 	}
+	
+	
+	@Test
+	public void testMatchStudents() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		
+		
+		course.addStudent(s1);
+		course.addStudent(s2);
+		course.addStudent(s3);
+	
+		s2.MatchWithClass(course, false);
+		s1.MatchWithClass(course, false);
+		
+	
+		Student stu = s2.getBestClassMatch(course);
+		assertEquals("J.Doe@gmail.com", stu.getEmail());
+		
+		
+		s2.match(course, s1);
+		assertTrue(s2.getMatchedStudents().containsKey(course.getName()));
+		assertTrue(s2.getMatchedStudents().get(course.getName()).contains(s1));
+		assertTrue(s1.getMatchedStudents().containsKey(course.getName()));
+		assertTrue(s1.getMatchedStudents().get(course.getName()).contains(s2));
+		
+		
+		
+		
+	
+		
+	}
+
 
 }

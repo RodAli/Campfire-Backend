@@ -31,6 +31,7 @@ public class Student {
 	////
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
+	private Map<String, ArrayList<Student>> matchedStudents = new HashMap<>();
 	
 	//Data structures for a Course to Assignment to Student mapping
 	private HashMap<String, HashMap<Assignment, AssignmentGroup>> groupsForAssignment = new HashMap<>();
@@ -84,6 +85,12 @@ public class Student {
 		this.description = description;
 	}
 	
+	
+	
+
+	public Map<String, ArrayList<Student>> getMatchedStudents() {
+		return matchedStudents;
+	}
 
 	/*
 	 * Gets the Hashmap of students to compatibility values for Course course.
@@ -496,6 +503,18 @@ public class Student {
 		}
 		
 		
+	}
+	
+	public void match(Course course, Student s){
+		if (!this.matchedStudents.containsKey(course.getName())){
+			this.matchedStudents.put(course.getName(), new ArrayList<Student>());
+		}
+		this.matchedStudents.get(course.getName()).add(s);
+		
+		if (!s.getMatchedStudents().containsKey(course.getName())){
+			s.getMatchedStudents().put(course.getName(), new ArrayList<Student>());
+		}
+		s.getMatchedStudents().get(course.getName()).add(this);
 	}
 	
 }
