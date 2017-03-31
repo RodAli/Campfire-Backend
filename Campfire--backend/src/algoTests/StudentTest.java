@@ -805,7 +805,8 @@ public class StudentTest {
 		
 		s1.leaveGroup(course301, "A1");
 		//Check if the group was deleted
-		//assertEquals(0, s1.getCampfiresByCourse(course301).size());
+		assertEquals(0, s1.getCampfiresByCourse(course301).size());
+		
 		//Check if the other users are now missing a member
 		assertEquals(1, s2.getGroup(course301, "A1").getMembers().size());
 		assertEquals(1, s3.getGroup(course301, "A1").getMembers().size());	
