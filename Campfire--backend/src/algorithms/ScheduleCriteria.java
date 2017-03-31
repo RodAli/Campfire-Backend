@@ -11,8 +11,8 @@ public class ScheduleCriteria extends HashMapCriteria{
 	private static final long serialVersionUID = 1952358793540268673L;
 	private final String ID = "Time Schedule";
 	
-	public ScheduleCriteria(HashMap<String, ArrayList<String>> schedule) {
-		super(schedule);
+	public ScheduleCriteria(HashMap<String, ArrayList<String>> schedule, int preference) {
+		super(schedule, preference);
 	}
 		
 	@Override

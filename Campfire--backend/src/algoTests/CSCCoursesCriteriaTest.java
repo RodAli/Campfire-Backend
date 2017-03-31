@@ -18,8 +18,8 @@ public class CSCCoursesCriteriaTest {
 		ArrayList<String> S1 = new ArrayList<String>(Arrays.asList("CSC301", "CSC369", "CSC300"));
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("CSC301", "CSC369", "CSC324", "CSC318"));
 		
-		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1);
-		CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2);
+		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1, 1);
+		CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2, 1);
 		
 		double compareResult = CSC1.Compare(CSC2);
 		assertEquals(2.0, compareResult, 0.01);
@@ -31,8 +31,8 @@ public class CSCCoursesCriteriaTest {
 		ArrayList<String> S1 = new ArrayList<String>(Arrays.asList("CSC301", "CSC369", "CSC300"));
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("CSC373", "CSC358", "CSC324", "CSC318"));
 		
-		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1);
-		CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2);
+		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1, 1);
+		CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2, 1);
 		
 		double compareResult = CSC1.Compare(CSC2);
 		assertEquals(0.0, compareResult, 0.01);
@@ -44,8 +44,8 @@ public class CSCCoursesCriteriaTest {
 		ArrayList<String> S1 = new ArrayList<String>(Arrays.asList("CSC301", "CSC369", "CSC300"));
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("Java", "C", "C++", "HTML"));
 		
-		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1);
-		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2);
+		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1, 1);
+		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2, 1);
 		
 		CSC1.Compare(PL2);
 		
@@ -53,7 +53,7 @@ public class CSCCoursesCriteriaTest {
 	
 	@Test
 	public void TestEnsureIDIsValid() {
-		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(null);
+		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(null, 0);
 		
 		assertEquals("Previous CSC Courses", CSC1.getID());
 	}

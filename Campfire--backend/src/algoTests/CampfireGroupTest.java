@@ -20,7 +20,7 @@ public class CampfireGroupTest {
 	@Test
 	public void ConstructorTest() {
 		ArrayList<Student> stu = new ArrayList<Student>(Arrays.asList(s1, s2, s3));
-		CampfireGroup g = new CampfireGroup("A1", stu, 3);
+		CampfireGroup g = new CampfireGroup("A1", stu, 3, 1);
 		
 		assertEquals("A1", g.getName());
 		assertEquals(stu, g.getMembers());
@@ -30,7 +30,7 @@ public class CampfireGroupTest {
 	@Test
 	public void retrieveAllStudentsTest() {
 		ArrayList<Student> stu = new ArrayList<Student>(Arrays.asList(s1, s2, s3));
-		CampfireGroup g = new CampfireGroup("A1", stu, 3);
+		CampfireGroup g = new CampfireGroup("A1", stu, 3, 1);
 	
 		assertEquals(s1, g.getMembers().get(0));
 		assertEquals(s2, g.getMembers().get(1));
@@ -41,7 +41,7 @@ public class CampfireGroupTest {
 	@Test
 	public void AddAMemberToGroupTest() {
 		ArrayList<Student> stu = new ArrayList<Student>();
-		CampfireGroup g = new CampfireGroup("A1", stu, 3);
+		CampfireGroup g = new CampfireGroup("A1", stu, 3, 1);
 		
 		assertEquals(0, g.getMembers().size());
 		
@@ -62,7 +62,7 @@ public class CampfireGroupTest {
 	@Test
 	public void RemoveStudentTest() {
 		ArrayList<Student> stu = new ArrayList<Student>(Arrays.asList(s1, s2, s3));
-		CampfireGroup g = new CampfireGroup("A1", stu, 3);
+		CampfireGroup g = new CampfireGroup("A1", stu, 3, 1);
 		
 		assertEquals(3, g.getMembers().size());
 		
@@ -83,7 +83,7 @@ public class CampfireGroupTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void TryToAddStudentsToFullClassTest() {
 		ArrayList<Student> stu = new ArrayList<Student>(Arrays.asList(s1));
-		CampfireGroup g = new CampfireGroup("A1", stu, 1);
+		CampfireGroup g = new CampfireGroup("A1", stu, 1, 1);
 		
 		g.addMember(s3);
 		
@@ -92,7 +92,7 @@ public class CampfireGroupTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void TryToRemoveUnknownStudentFromListTest() {
 		ArrayList<Student> stu = new ArrayList<Student>(Arrays.asList(s1));
-		CampfireGroup g = new CampfireGroup("A1", stu, 1);
+		CampfireGroup g = new CampfireGroup("A1", stu, 1, 1);
 		
 		g.removeMember(s3);
 	}
@@ -100,7 +100,7 @@ public class CampfireGroupTest {
 	@Test
 	public void TryToAddAnExistingStudentTest() {
 		ArrayList<Student> stu = new ArrayList<Student>(Arrays.asList(s1));
-		CampfireGroup g = new CampfireGroup("A1", stu, 2);
+		CampfireGroup g = new CampfireGroup("A1", stu, 2, 1);
 		
 		assertEquals(1, g.getMembers().size());
 		

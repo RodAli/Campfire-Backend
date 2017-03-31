@@ -33,9 +33,9 @@ public class AssignmentTest {
 	ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("CSC301", "CSC369", "CSC324", "CSC318"));
 	ArrayList<String> S3 = new ArrayList<String>(Arrays.asList("CSC324", "CSC369"));
 	
-	CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1);
-	CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2);
-	CSCCoursesCriteria CSC3 = new CSCCoursesCriteria(S3);
+	CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1, 1);
+	CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2, 1);
+	CSCCoursesCriteria CSC3 = new CSCCoursesCriteria(S3, 1);
 	
 	
 

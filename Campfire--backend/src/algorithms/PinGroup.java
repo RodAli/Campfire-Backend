@@ -2,17 +2,16 @@ package algorithms;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 public class PinGroup {
 	
-	private String pin;
-	private Map<String, CampfireGroup> GroupPin;
+	private Map<String, CampfireGroup> GroupPins;
 			
 	// Creates a map where a PIN is a special ID for each course
-	public PinGroup(String name, ArrayList<Student> group, int size) {
-		String pin = generatePin();
-		this.GroupPin.put(pin, new CampfireGroup(name, group, size));
+	public PinGroup(CampfireGroup group) {
+		this.GroupPins.put(generatePin(), group);
 	}
 			
 	// Generates a 15 Character PIN code for each course that is created
@@ -26,14 +25,19 @@ public class PinGroup {
 	    return newPin; 
 	}
 		
-	// Get the entire "table" of all the groups and pins
+	// Get the entire map of all the groups and pins
 	public Map<String, CampfireGroup> getGroupPins(){
-		return this.GroupPin;
+		return this.GroupPins;
 	}
 	
-	// This is mostly needed for testing purposes
-	public String getPin(){
-		return this.pin;
+	// Extract the PIN for the given group
+	public String findPin(CampfireGroup group){
+		for(Entry<String, CampfireGroup> value : this.GroupPins.entrySet()){
+			if(group.equals(value.getValue())){
+				return value.getKey();
+			}
+		}
+		return null;
 	}
 
 }
