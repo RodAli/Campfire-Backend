@@ -1,5 +1,6 @@
 package algorithms;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
@@ -9,8 +10,8 @@ public class PinCourse {
 	private Map<String, Course> CoursePins;
 	
 	// Creates a map where a PIN is a special ID for each course
-	public PinCourse(Course course) {
-		CoursePins.put(generatePin(), course);
+	public PinCourse() {
+		this.CoursePins = new HashMap<String, Course>();
 	}
 	
 	// Generates a 15 Character PIN code for each course that is created
@@ -21,6 +22,16 @@ public class PinCourse {
         while (newPin.length() < 15) {
             newPin += allCharacters.charAt(random.nextInt(36));
         }
+        
+		//Create a Unique PIN
+		for(String PINS : this.getCoursePins().keySet()){
+			if(PINS == newPin){
+				newPin = "";
+				while (newPin.length() < 15){
+					newPin += allCharacters.charAt(random.nextInt(36));
+				}
+			}
+		}
         return newPin; 
     }
 	
@@ -37,6 +48,17 @@ public class PinCourse {
 			}
 		}
 		return null;
+	}
+	
+	
+	//Add a Course with the designated PIN
+	public void addPinCourse(Course crs){
+		this.CoursePins.put(generatePin(), crs);
+	}
+	
+	//Remove a Course by using the designated PIN
+	public void removePinCourse(String pin){
+		this.CoursePins.remove(pin);
 	}
 	
 }

@@ -38,9 +38,9 @@ public class StudentTest {
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("CSC301", "CSC369", "CSC324", "CSC318"));
 		ArrayList<String> S3 = new ArrayList<String>(Arrays.asList("CSC324", "CSC369"));
 		
-		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1);
-		CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2);
-		CSCCoursesCriteria CSC3 = new CSCCoursesCriteria(S3);
+		CSCCoursesCriteria CSC1 = new CSCCoursesCriteria(S1, 1);
+		CSCCoursesCriteria CSC2 = new CSCCoursesCriteria(S2, 1);
+		CSCCoursesCriteria CSC3 = new CSCCoursesCriteria(S3, 1);
 		
 		c1.add(CSC1);
 		c2.add(CSC2);
@@ -52,9 +52,9 @@ public class StudentTest {
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("History", "Biology", "Philosophy", "Women and Gender Studies"));
 		ArrayList<String> S3 = new ArrayList<String>(Arrays.asList("Astronomy", "Anthropology", "Physics"));
 		
-		ElectivesCriteria E1 = new ElectivesCriteria(S1);
-		ElectivesCriteria E2 = new ElectivesCriteria(S2);
-		ElectivesCriteria E3 = new ElectivesCriteria(S3);
+		ElectivesCriteria E1 = new ElectivesCriteria(S1, 1);
+		ElectivesCriteria E2 = new ElectivesCriteria(S2, 1);
+		ElectivesCriteria E3 = new ElectivesCriteria(S3, 1);
 		
 		c1.add(E1);
 		c2.add(E2);
@@ -66,9 +66,9 @@ public class StudentTest {
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("Breathing", "TV", "Studying", "Math"));
 		ArrayList<String> S3 = new ArrayList<String>(Arrays.asList("Talking", "VideoGames", "TV", "Breathing"));
 		
-		HobbiesCriteria H1 = new HobbiesCriteria(S1);
-		HobbiesCriteria H2 = new HobbiesCriteria(S2);
-		HobbiesCriteria H3 = new HobbiesCriteria(S3);
+		HobbiesCriteria H1 = new HobbiesCriteria(S1, 1);
+		HobbiesCriteria H2 = new HobbiesCriteria(S2, 1);
+		HobbiesCriteria H3 = new HobbiesCriteria(S3, 1);
 		
 		c1.add(H1);
 		c2.add(H2);
@@ -80,9 +80,9 @@ public class StudentTest {
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("Java", "C", "C++", "HTML"));
 		ArrayList<String> S3 = new ArrayList<String>(Arrays.asList("JavaScript", "C", "C++", "HTML"));
 		
-		ProgrammingLanguagesCriteria PL1 = new ProgrammingLanguagesCriteria(S1);
-		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2);
-		ProgrammingLanguagesCriteria PL3 = new ProgrammingLanguagesCriteria(S3);
+		ProgrammingLanguagesCriteria PL1 = new ProgrammingLanguagesCriteria(S1, 1);
+		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2, 1);
+		ProgrammingLanguagesCriteria PL3 = new ProgrammingLanguagesCriteria(S3, 1);
 		
 		c1.add(PL1);
 		c2.add(PL2);
@@ -114,9 +114,9 @@ public class StudentTest {
 		S3.put("Tuesday", TTimesS3);
 		S3.put("Sunday", STimesS3);
 		
-		ScheduleCriteria SC1 = new ScheduleCriteria(S1);
-		ScheduleCriteria SC2 = new ScheduleCriteria(S2);
-		ScheduleCriteria SC3 = new ScheduleCriteria(S3);
+		ScheduleCriteria SC1 = new ScheduleCriteria(S1, 2);
+		ScheduleCriteria SC2 = new ScheduleCriteria(S2, 2);
+		ScheduleCriteria SC3 = new ScheduleCriteria(S3, 2);
 		
 		c1.add(SC1);
 		c2.add(SC2);
@@ -497,7 +497,7 @@ public class StudentTest {
 		s2.MatchWithClass(course, false);
 		s1.MatchWithClass(course, false);
 		
-		s1.createGroup(course, "A1", 3);
+		s1.createGroup(course, "A1", 3, 1);
 		
 		assertEquals(1, s1.getCampfires().get(course).size());
 		assertEquals(0, s1.getGroup(course, "A1").getCurrentSize());
@@ -528,9 +528,9 @@ public class StudentTest {
 		s2.MatchWithClass(course343, false);
 		s1.MatchWithClass(course343, false);
 		
-		s1.createGroup(course301, "A1", 7);
-		s1.createGroup(course343, "A1", 2);
-		s1.createGroup(course343, "A2", 3);
+		s1.createGroup(course301, "A1", 7, 1);
+		s1.createGroup(course343, "A1", 2, 2);
+		s1.createGroup(course343, "A2", 3, 3);
 		
 		assertEquals(2, s1.getCampfires().size());
 		
@@ -566,17 +566,17 @@ public class StudentTest {
 		s2.MatchWithClass(course343, false);
 		s1.MatchWithClass(course343, false);
 		
-		s1.createGroup(course301, "A1", 7);
-		s1.createGroup(course343, "A1", 2);
-		s1.createGroup(course343, "A2", 3);
+		s1.createGroup(course301, "A1", 7, 1);
+		s1.createGroup(course343, "A1", 2, 2);
+		s1.createGroup(course343, "A2", 3, 3);
 		
-		s2.createGroup(course301, "A1", 7);
-		s2.createGroup(course343, "A1", 2);
-		s2.createGroup(course343, "A2", 3);
+		s2.createGroup(course301, "A1", 7, 1);
+		s2.createGroup(course343, "A1", 2, 2);
+		s2.createGroup(course343, "A2", 3, 3);
 		
-		s3.createGroup(course301, "A1", 7);
-		s3.createGroup(course343, "A1", 2);
-		s3.createGroup(course343, "A2", 3);
+		s3.createGroup(course301, "A1", 7, 1);
+		s3.createGroup(course343, "A1", 2, 2);
+		s3.createGroup(course343, "A2", 3, 3);
 		
 		//Put s1 and s2 into group A1-Course301
 		
@@ -653,19 +653,19 @@ public class StudentTest {
 		s2.MatchWithClass(course343, false);
 		s1.MatchWithClass(course343, false);
 		
-		s1.createGroup(course301, "A1", 7);
-		s1.createGroup(course343, "A1", 2);
-		s1.createGroup(course343, "A2", 3);
+		s1.createGroup(course301, "A1", 7, 1);
+		s1.createGroup(course343, "A1", 2, 2);
+		s1.createGroup(course343, "A2", 3, 3);
 		
-		s2.createGroup(course301, "A1", 7);
-		s2.createGroup(course343, "A1", 2);
-		s2.createGroup(course343, "A2", 3);
+		s2.createGroup(course301, "A1", 7, 1);
+		s2.createGroup(course343, "A1", 2, 2);
+		s2.createGroup(course343, "A2", 3, 3);
 		
-		s3.createGroup(course301, "A1", 7);
-		s3.createGroup(course343, "A1", 2);
-		s3.createGroup(course343, "A2", 3);
+		s3.createGroup(course301, "A1", 7, 1);
+		s3.createGroup(course343, "A1", 2, 2);
+		s3.createGroup(course343, "A2", 3, 3);
 		
-		//Fill Up all the Courses with Students
+		//Fill Up all the Groups with Students
 		
 		s1.unionMembers(course301, "A1", s2);
 		s1.unionMembers(course301, "A1", s3);
@@ -743,15 +743,148 @@ public class StudentTest {
 		
 		assertEquals("[]", course343A2group.toString());
 		
+	}
 
+	@Test
+	public void LeavingACampfireGroup() {
 		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course301 = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		Course course343 = new Course("CSC343", "Introduction to Databases", "Diane Horton");
+		
+		course301.addStudent(s1);
+		course301.addStudent(s2);
+		course301.addStudent(s3);
+		course343.addStudent(s1);
+		course343.addStudent(s2);
+		course343.addStudent(s3);
+		
+		s2.MatchWithClass(course301, false);
+		s1.MatchWithClass(course301, false);
+		s2.MatchWithClass(course343, false);
+		s1.MatchWithClass(course343, false);
+		
+		s1.createGroup(course301, "A1", 7, 1);
+		s1.createGroup(course343, "A1", 2, 2);
+		s1.createGroup(course343, "A2", 3, 3);
+		
+		s2.createGroup(course301, "A1", 7, 1);
+		s2.createGroup(course343, "A1", 2, 2);
+		s2.createGroup(course343, "A2", 3, 3);
+		
+		s3.createGroup(course301, "A1", 7, 1);
+		s3.createGroup(course343, "A1", 2, 2);
+		s3.createGroup(course343, "A2", 3, 3);
+		
+		//Fill Up all the Groups with Students
+		
+		s1.unionMembers(course301, "A1", s2);
+		s1.unionMembers(course301, "A1", s3);
+		s1.unionMembers(course343, "A1", s2);
+		s1.unionMembers(course343, "A1", s3);
+		s1.unionMembers(course343, "A2", s2);
+		s1.unionMembers(course343, "A2", s3);
+		
+		//Check that groups are full
+		
+		assertEquals(2, s1.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s2.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s3.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s1.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s2.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s3.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s1.getGroup(course343, "A2").getMembers().size());
+		assertEquals(2, s2.getGroup(course343, "A2").getMembers().size());
+		assertEquals(2, s3.getGroup(course343, "A2").getMembers().size());
+		
+		//Student leaves a group
+		
+		s1.leaveGroup(course301, "A1");
+		//Check if the group was deleted
+		assertEquals(0, s1.getCampfiresByCourse(course301).size());
+		//Check if the other users are now missing a member
+		assertEquals(1, s2.getGroup(course301, "A1").getMembers().size());
+		assertEquals(1, s3.getGroup(course301, "A1").getMembers().size());	
+
 	}
 	
-	/* 
-	 * 
-	 * Ran into a problem here will need attention - CORNER CASES!!!
-	 * 
-	 * */
+	public void LeavingAllGroupsForACourse() {
+		
+		addAll();
+		
+		s1 = new Student("Jane", "Doe", "J.Doe@gmail.com", "pass", c1);
+		s2 = new Student("John", "Smith", "J.Smith@gmail.com", "pass", c2);
+		s3 = new Student("Don", "Donaldson", "D.Donaldson@gmail.com", "pass", c3);
+		
+		Course course301 = new Course("CSC301", "Intro to Software Engineering", "Joey Freund");
+		Course course343 = new Course("CSC343", "Introduction to Databases", "Diane Horton");
+		
+		course301.addStudent(s1);
+		course301.addStudent(s2);
+		course301.addStudent(s3);
+		course343.addStudent(s1);
+		course343.addStudent(s2);
+		course343.addStudent(s3);
+		
+		s2.MatchWithClass(course301, false);
+		s1.MatchWithClass(course301, false);
+		s2.MatchWithClass(course343, false);
+		s1.MatchWithClass(course343, false);
+		
+		s1.createGroup(course301, "A1", 7, 1);
+		s1.createGroup(course343, "A1", 2, 2);
+		s1.createGroup(course343, "A2", 3, 3);
+		
+		s2.createGroup(course301, "A1", 7, 1);
+		s2.createGroup(course343, "A1", 2, 2);
+		s2.createGroup(course343, "A2", 3, 3);
+		
+		s3.createGroup(course301, "A1", 7, 1);
+		s3.createGroup(course343, "A1", 2, 2);
+		s3.createGroup(course343, "A2", 3, 3);
+		
+		//Fill Up all the Groups with Students
+		
+		s1.unionMembers(course301, "A1", s2);
+		s1.unionMembers(course301, "A1", s3);
+		s1.unionMembers(course343, "A1", s2);
+		s1.unionMembers(course343, "A1", s3);
+		s1.unionMembers(course343, "A2", s2);
+		s1.unionMembers(course343, "A2", s3);
+		
+		//Check that groups are full
+		
+		assertEquals(2, s1.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s2.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s3.getGroup(course301, "A1").getMembers().size());
+		assertEquals(2, s1.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s2.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s3.getGroup(course343, "A1").getMembers().size());
+		assertEquals(2, s1.getGroup(course343, "A2").getMembers().size());
+		assertEquals(2, s2.getGroup(course343, "A2").getMembers().size());
+		assertEquals(2, s3.getGroup(course343, "A2").getMembers().size());
+		
+		//Check the amount of groups inside csc343
+		assertEquals(2, s1.getCampfiresByCourse(course343).size());
+		
+		//Student leaves a group
+		s1.byebyeCruelWorld(course343);
+		
+		//Check if all the groups were deleted
+		assertEquals(0, s1.getCampfiresByCourse(course343).size());
+		
+		//Check if the other users are now missing a member in all the groups for that course
+		assertEquals(1, s2.getGroup(course343, "A1").getMembers().size());
+		assertEquals(1, s3.getGroup(course343, "A1").getMembers().size());	
+		assertEquals(1, s2.getGroup(course343, "A2").getMembers().size());
+		assertEquals(1, s3.getGroup(course343, "A2").getMembers().size());	
+
+	}
 	
 	////////////////////Testing TreeMap
 	@Test
