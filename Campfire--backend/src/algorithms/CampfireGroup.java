@@ -1,6 +1,7 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CampfireGroup {
 
@@ -8,8 +9,9 @@ public class CampfireGroup {
 	private int size;
 	private int current_size = 0;
 	private String name;
+	private int groupID;
 	
-	public CampfireGroup(String name, ArrayList<Student> group, int size) {
+	public CampfireGroup(String name, ArrayList<Student> group, int size, int ID) {
 		/* 
 		 * Add null checkers
 		 * Check for group name to be original
@@ -21,6 +23,7 @@ public class CampfireGroup {
 		this.group = group;
 		this.size = size;
 		this.name = name;
+		this.groupID = ID;
 		this.current_size = group.size();
 	}
 	
@@ -65,6 +68,10 @@ public class CampfireGroup {
 	
 	public int getCurrentSize(){
 		return this.current_size;
+	}
+	
+	public int getGroupID(){
+		return groupID;
 	}
 	
 }

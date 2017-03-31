@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 /*
  * A student using the app.
@@ -64,7 +65,6 @@ public class Student {
 	public String getLname() {
 		return lname;
 	}
-
 
 	public String getEmail() {
 		return email;
@@ -272,9 +272,9 @@ public class Student {
 	}
 	
 	// Better Campfire //
-	public void createGroup(Course course, String name, int size){
+	public void createGroup(Course course, String name, int size, int groupID){
 		
-		CampfireGroup group = new CampfireGroup(name, new ArrayList<Student>(), size);
+		CampfireGroup group = new CampfireGroup(name, new ArrayList<Student>(), size, groupID);
 		if(campfires.get(course) == null){
 			this.campfires.put(course, new ArrayList<CampfireGroup>());
 		}
@@ -308,6 +308,7 @@ public class Student {
 		return null;
 	}
 	
+	//A student adds another student to his group.
 	public void unionMembers(Course crs, String name, Student newMember){
 		//Added the new member to all the members in that group already.
 		for(Student oldMember : this.getGroup(crs, name).getMembers()){
@@ -321,7 +322,7 @@ public class Student {
 		}
 		
 		//Fill his group up with all his new member(s)
-		newMember.createGroup(crs, name, this.getGroup(crs, name).getSize());
+		newMember.createGroup(crs, name, this.getGroup(crs, name).getSize(), this.getGroup(crs, name).getGroupID());
 		for(Student allMembers : this.getGroup(crs, name).getMembers()){
 			newMember.getGroup(crs, name).addMember(allMembers);
 		}
@@ -331,6 +332,7 @@ public class Student {
 		newMember.getGroup(crs, name).addMember(this);
 	}
 	
+	//Student kicks a student out of the group
 	public void kickMember(Course crs, String name, Student removeMember){
 		
 		//To avoid errors, first remove the kicked member from students group
@@ -341,7 +343,7 @@ public class Student {
 			oldMember.getGroup(crs, name).removeMember(removeMember);
 		}
 		
-		//Remove all kicked members old group members from his group
+		//Remove all kicked members, old group members from his group
 		for(Student allMembers : this.getGroup(crs, name).getMembers()){
 			removeMember.getGroup(crs, name).removeMember(allMembers);
 		}
@@ -352,6 +354,30 @@ public class Student {
 		//Remove the group from the kicked members menu
 		removeMember.getCampfires().get(crs).remove(this.getGroup(crs, name));
 		
+	}
+	
+	//Student leaves the group
+	public void leaveGroup(Course crs, String name){
+		
+		//All the other students see the student leave the group.
+		for(Student oldMember : this.getGroup(crs, name).getMembers()){
+			oldMember.getGroup(crs, name).removeMember(this);
+		}
+		
+		//Remove all old group members from leaving persons group
+		for(Student allMembers : this.getGroup(crs, name).getMembers()){
+			this.getGroup(crs, name).removeMember(allMembers);
+		}
+		
+		//Remove the group from the leaving members campfires menu
+		this.getCampfires().get(crs).remove(this.getGroup(crs, name));
+	}
+	
+	//Student leaves ALL groups he is in for a specific course.
+	public void byebyeCruelWorld(Course course){
+		for(CampfireGroup group : this.campfires.get(course)){
+				this.leaveGroup(course, group.getName());
+			}
 	}
 	
 	///////////////////////////////////////////////////////////////

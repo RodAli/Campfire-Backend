@@ -22,8 +22,8 @@ public class ProgrammingLanguagesCriteriaTest {
 		ArrayList<String> S1 = new ArrayList<String>(Arrays.asList("Java", "C", "Racket"));
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("Java", "C", "C++", "HTML"));
 		
-		ProgrammingLanguagesCriteria PL1 = new ProgrammingLanguagesCriteria(S1);
-		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2);
+		ProgrammingLanguagesCriteria PL1 = new ProgrammingLanguagesCriteria(S1, 1);
+		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2, 1);
 		
 		double compareResult = PL1.Compare(PL2);
 		assertEquals(2.0, compareResult, 0.01);
@@ -35,8 +35,8 @@ public class ProgrammingLanguagesCriteriaTest {
 		ArrayList<String> S1 = new ArrayList<String>(Arrays.asList("XML", "C#", "Racket"));
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("Java", "C", "C++", "HTML"));
 		
-		ProgrammingLanguagesCriteria PL1 = new ProgrammingLanguagesCriteria(S1);
-		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2);
+		ProgrammingLanguagesCriteria PL1 = new ProgrammingLanguagesCriteria(S1, 1);
+		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2, 1);
 		
 		double compareResult = PL1.Compare(PL2);
 		assertEquals(0.0, compareResult, 0.01);
@@ -45,11 +45,11 @@ public class ProgrammingLanguagesCriteriaTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void TestCompare2DifferentCriteria() {
 		ArrayList<String> S1 = new ArrayList<String>(Arrays.asList("Eating", "Walking", "Grooming Cats"));
-		HobbiesCriteria H1 = new HobbiesCriteria(S1);
+		HobbiesCriteria H1 = new HobbiesCriteria(S1, 1);
 		
 		ArrayList<String> S2 = new ArrayList<String>(Arrays.asList("Java", "C", "C++", "HTML"));
 		
-		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2);
+		ProgrammingLanguagesCriteria PL2 = new ProgrammingLanguagesCriteria(S2, 1);
 		
 		PL2.Compare(H1);
 		
@@ -57,7 +57,7 @@ public class ProgrammingLanguagesCriteriaTest {
 	
 	@Test
 	public void TestEnsureIDIsValid() {
-		ProgrammingLanguagesCriteria PL1 = new ProgrammingLanguagesCriteria(null);
+		ProgrammingLanguagesCriteria PL1 = new ProgrammingLanguagesCriteria(null, 0);
 		
 		assertEquals("Programming Languages", PL1.getID());
 	}
