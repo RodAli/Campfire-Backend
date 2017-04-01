@@ -62,5 +62,9 @@ public class PinGroup {
 		this.GroupPins.remove(pin);
 	}
 	
+	//For database team to add load the hashmap in right away
+	public void setPinGroup(HashMap<String, CampfireGroup> setter){
+		this.GroupPins = setter;
+	}
 
 }
