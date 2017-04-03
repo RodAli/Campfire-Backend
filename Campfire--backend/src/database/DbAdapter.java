@@ -203,6 +203,38 @@ public class DbAdapter {
     }
 
     /**
+     * Get a student without his matched students.
+     * @param email of the student
+     * @return student object without his matched students
+     */
+    public static Student getStudentLite(String email){
+        try {
+            ArrayList<String> args = new ArrayList<String>();
+            args.add(email);
+            ResultDatabaseThread thread = new ResultDatabaseThread("SELECT * FROM student WHERE email = ?", args);
+            thread.execute();
+
+            ResultSet rs = thread.get();
+            Student student = null;
+            if (rs.next()){
+
+                student = new Student(
+                        rs.getString("fname"),
+                        rs.getString("lname"),
+                        rs.getString("email"),
+                        rs.getString("pass"),
+                        comparableDeserializer(rs.getString("comparable"))
+                );
+                student.setDescription(rs.getString("description"));
+            }
+            return student;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Get all the student object in the database.
      * @return a list of all the students in the database
      */
@@ -304,10 +336,10 @@ public class DbAdapter {
                 String course_name = rs.getString("code");
                 String matched_with = rs.getString("matched_with");
                 if (matches.containsKey(course_name)){
-                    matches.get(course_name).add(getStudent(matched_with));
+                    matches.get(course_name).add(getStudentLite(matched_with));
                 } else {
                     ArrayList<Student> stu_list = new ArrayList<>();
-                    stu_list.add(getStudent(matched_with));
+                    stu_list.add(getStudentLite(matched_with));
                     matches.put(course_name, stu_list);
                 }
             }
@@ -852,6 +884,30 @@ public class DbAdapter {
                 args
         );
         thread.execute();
+    }
+
+    /**
+     * Return a list of emails of the students that are in the given chat.
+     * @param chat_id of the chat we want to find the students for
+     * @return a List of student emails in the chat
+     */
+    public static List<String> getAllStudentsInChat(int chat_id){
+        List<String> stu_emails = new ArrayList<>();
+        ResultDatabaseThread thread = new ResultDatabaseThread(
+                "SELECT * FROM chats WHERE chat_id = " + Integer.toString(chat_id),
+                null
+        );
+        thread.execute();
+        try {
+            ResultSet rs = thread.get();
+            while(rs.next()){
+                stu_emails.add(rs.getString("email"));
+            }
+            return stu_emails;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return stu_emails;
     }
 
     /* ---------- PIN QUERIES ---------- */
